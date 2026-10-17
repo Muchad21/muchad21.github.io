@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seviye Testi ve Çalışma Programı · YKS Hazırlık</title>
+  <meta name="description" content="30 soruluk YKS seviye testi ve sana özel haftalık çalışma programı.">
+  <style>
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #1c1f2a;
+  --muted: #6b7080;
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --border: #e3e5ee;
+  --warn-bg: #fff6e5;
+  --warn-text: #8a5a00;
+  --radius: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12131a;
+    --surface: #1c1e28;
+    --text: #eceef5;
+    --muted: #9a9fb0;
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --border: #2c2f3d;
+    --warn-bg: #2e2614;
+    --warn-text: #f0c46c;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo { font-weight: 800; font-size: 1.25rem; color: var(--text); text-decoration: none; }
+.logo span { color: var(--primary); }
+nav { display: flex; overflow-x: auto; white-space: nowrap; }
+nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-weight: 500; }
+nav a.aktif { color: var(--primary); font-weight: 700; }
+nav a:hover { color: var(--primary); }
+
+.hero {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  text-align: center;
+  padding: 72px 0;
+}
+.hero h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 12px; }
+.hero p { opacity: .9; margin-bottom: 24px; }
+.hero .btn { background: #fff; color: var(--primary-dark); }
+
+.btn {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.section { padding: 56px 16px; }
+.section h2 { font-size: 1.6rem; margin-bottom: 6px; }
+.section h3 { font-size: 1.15rem; margin: 24px 0 10px; }
+.muted { color: var(--muted); margin-bottom: 20px; }
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.cd-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  padding: 20px 8px;
+}
+.cd-box span {
+  display: block;
+  font-size: clamp(1.6rem, 6vw, 2.6rem);
+  font-weight: 800;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.cd-box small { color: var(--muted); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.net-table { width: 100%; border-collapse: collapse; }
+.net-table th, .net-table td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.net-table th { color: var(--muted); font-weight: 600; font-size: .9rem; }
+.net-table td small { color: var(--muted); display: block; font-size: .8rem; }
+.net-table .grup td {
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding-top: 14px;
+}
+input[type="number"] {
+  width: 64px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+input.hata { border-color: #e5484d; }
+.net-table .net { font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
+.net-table tfoot td { font-weight: 800; border-bottom: none; }
+.net-table tfoot td:last-child { color: var(--primary); font-size: 1.1rem; }
+
+.obp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+}
+.obp-row label { display: flex; align-items: center; gap: 8px; }
+.obp-row input[type="number"] { width: 90px; }
+.obp-row .muted { margin: 0; font-size: .9rem; }
+
+.actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.res-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.res-card h4 { font-size: 1rem; margin-bottom: 8px; }
+.res-card h4 small { color: var(--muted); font-weight: 500; }
+.res-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: .92rem;
+  padding: 3px 0;
+}
+.res-line span:first-child { color: var(--muted); }
+.res-line b { font-variant-numeric: tabular-nums; }
+.res-big {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.res-card .yok { color: var(--muted); font-size: .9rem; }
+
+.note {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: .9rem;
+  margin-top: 16px;
+}
+.sources { font-size: .85rem; color: var(--muted); margin-top: 12px; }
+.sources a { color: var(--primary); }
+
+.kaydet-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.kaydet-row input[type="text"] {
+  flex: 1;
+  min-width: 160px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+}
+.kaydet-mesaj { color: var(--primary); font-size: .9rem; font-weight: 600; }
+
+.chart-wrap { margin-bottom: 12px; }
+.chart-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+#grafik { width: 100%; height: auto; display: block; }
+#grafik text { fill: var(--muted); font-size: 20px; font-family: inherit; }
+#grafik .eksen { stroke: var(--border); }
+#grafik .cizgi { stroke: var(--primary); stroke-width: 4; fill: none; }
+#grafik .nokta { fill: var(--primary); }
+#grafik .etiket { fill: var(--text); font-weight: 700; }
+.deneme-table td:last-child { text-align: right; }
+.sil {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 2px 6px;
+}
+.sil:hover { color: #e5484d; }
+
+.filtreler {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+.filtreler label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); font-weight: 600; }
+.filtreler input, .filtreler input[type="number"], .filtreler select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+.puan-kaynak { font-size: .85rem; color: var(--muted); margin-top: 8px; }
+.prog-liste { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.prog {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.prog-ad { font-weight: 700; }
+.prog-uni { font-size: .88rem; }
+.prog-fak { font-size: .8rem; color: var(--muted); }
+.prog-sag { text-align: right; flex-shrink: 0; }
+.prog-puan { font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; }
+.prog-detay { font-size: .8rem; color: var(--muted); }
+.prog-detay a { color: var(--primary); }
+.rozet {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.liste-baslik { display: flex; justify-content: space-between; align-items: baseline; margin-top: 24px; }
+.liste-baslik h3 { margin: 0; }
+.liste-baslik span { color: var(--muted); font-size: .9rem; }
+.daha-fazla { margin-top: 10px; }
+
+.site-footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 520px) {
+  nav a { margin-left: 10px; font-size: .85rem; }
+  .logo span { display: none; }
+  .filtreler input[type="number"] { width: 100%; }
+  .logo { font-size: 1.05rem; }
+  .prog { flex-direction: column; gap: 4px; }
+  .prog-sag { text-align: left; }
+  .countdown { gap: 8px; }
+  input[type="number"] { width: 52px; }
+  .net-table th, .net-table td { padding: 8px 4px; }
+}
+  
+.adimlar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.quiz-ust { display: flex; justify-content: space-between; color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
+.ilerleme { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+.ilerleme div { height: 100%; background: var(--primary); width: 0; transition: width .2s; }
+.soru-ders { font-size: .8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .04em; }
+.soru-metin { font-size: 1.15rem; font-weight: 600; margin: 6px 0 16px; }
+.secenekler { display: flex; flex-direction: column; gap: 8px; }
+.secenek {
+  text-align: left;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.secenek:hover { border-color: var(--primary); }
+.secenek.secili { border-color: var(--primary); background: var(--primary); color: #fff; }
+.quiz-alt { display: flex; justify-content: space-between; gap: 8px; margin-top: 16px; }
+.btn:disabled { opacity: .45; cursor: default; filter: none; }
+
+.bar-satir { display: grid; grid-template-columns: 110px 1fr 54px; gap: 10px; align-items: center; padding: 5px 0; font-size: .92rem; }
+.bar { height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.bar div { height: 100%; background: var(--primary); border-radius: 999px; }
+.bar-satir b { text-align: right; font-variant-numeric: tabular-nums; }
+
+.gun-saat {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.gun-saat label { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .85rem; color: var(--muted); font-weight: 600; }
+.gun-saat select, .ayar select {
+  padding: 8px 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+  width: 100%;
+}
+.ayar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.ayar label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); font-weight: 600; }
+.toplam-saat { margin-top: 10px; font-weight: 700; }
+
+.hafta { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 12px; }
+.gun-kart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+.gun-kart h4 { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.gun-kart h4 span { color: var(--muted); font-weight: 500; font-size: .9rem; }
+.blok { border-left: 4px solid var(--primary); padding: 6px 10px; margin-bottom: 8px; background: var(--bg); border-radius: 0 10px 10px 0; }
+.blok b { display: block; }
+.blok small { color: var(--muted); }
+.blok.deneme { border-left-color: #e5484d; }
+.bos-gun { color: var(--muted); font-size: .9rem; }
+.ozet-liste { margin-top: 8px; }
+.ai-kutu textarea {
+  width: 100%;
+  min-height: 160px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: .85rem;
+}
+.gizli { display: none; }
+
+@media (max-width: 520px) {
+  .gun-saat { grid-template-columns: repeat(4, 1fr); }
+  .bar-satir { grid-template-columns: 90px 1fr 46px; }
+}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">YKS<span>Hazırlık</span></a>
+      <nav>
+        <a href="index.html#hesapla">Hesapla</a>
+        <a href="index.html#tercih">Tercih</a>
+        <a href="denemeler.html">Denemeler</a>
+        <a href="program.html" class="aktif">Program</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section" id="seviye">
+      <h2>1. Seviye Testi</h2>
+      <p class="muted">30 temel soru, 9 ders. Hangi derste temelinin sağlam, hangisinde eksik olduğunu gösterir. Bilmediğin soruyu boş bırakabilirsin, tahmin etmemen sonucun doğru çıkması için daha iyi.</p>
+      <div class="card" id="quiz-kutu"></div>
+    </section>
+
+    <section class="container section" id="program">
+      <h2>2. Haftalık Çalışma Programı</h2>
+      <p class="muted">Seviye testin ve kaydettiğin denemelerdeki netlerine bakarak eksik olduğun derslere daha çok saat ayırır. Her gün kaç saat çalışacağını sen seçersin.</p>
+
+      <div class="card">
+        <div class="ayar">
+          <label>Alanın
+            <select id="alan">
+              <option value="SAY">Sayısal</option>
+              <option value="EA">Eşit Ağırlık</option>
+              <option value="SOZ">Sözel</option>
+              <option value="TYT">Sadece TYT</option>
+            </select>
+          </label>
+        </div>
+        <p class="muted" style="margin-bottom:8px">Her gün kaç saat çalışacaksın?</p>
+        <div class="gun-saat" id="gun-saat"></div>
+        <p class="toplam-saat" id="toplam-saat"></p>
+        <p class="puan-kaynak" id="veri-durum"></p>
+        <div class="actions"><button class="btn" id="olustur">Programımı Oluştur</button></div>
+      </div>
+
+      <div id="program-sonuc"></div>
+
+      <div class="card ai-kutu" style="margin-top:20px">
+        <h3 style="margin-top:0">Yapay zekâya daha detaylı sor</h3>
+        <p class="muted" style="margin-bottom:0">Seviye testin, denemelerin ve çalışma saatlerinle hazır bir mesaj oluşturur. Kopyalayıp ücretsiz kullanabildiğin bir yapay zekâ sohbetine (Claude, ChatGPT, Gemini) yapıştırırsan konu konu daha detaylı bir program ister.</p>
+        <div class="actions"><button class="btn btn-ghost" id="ai-kopyala">Mesajı oluştur ve kopyala</button></div>
+        <textarea id="ai-metin" class="gizli" readonly></textarea>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>YKS Hazırlık · Başarılar! 🎯</p>
+    </div>
+  </footer>
+
+  <script>
+// ---------- Ortak ----------
+function oku(anahtar, varsayilan) {
+  try {
+    const v = JSON.parse(localStorage.getItem(anahtar));
+    return v === null ? varsayilan : v;
+  } catch (e) {
+    return varsayilan;
+  }
+}
+
+function yaz(anahtar, deger) {
+  try {
+    localStorage.setItem(anahtar, JSON.stringify(deger));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function kacis(metin) {
+  const div = document.createElement("div");
+  div.textContent = metin;
+  return div.innerHTML;
+}
+
+// ---------- Seviye testi ----------
+const DERS_AD = {
+  turkce: "Türkçe",
+  matematik: "Matematik",
+  fizik: "Fizik",
+  kimya: "Kimya",
+  biyoloji: "Biyoloji",
+  edebiyat: "Edebiyat",
+  tarih: "Tarih",
+  cografya: "Coğrafya",
+  felsefe: "Felsefe",
+};
+
+// c: doğru seçeneğin sırası (0'dan başlar)
+const SORULAR = [
+  { ders: "turkce", s: "Aşağıdaki kelimelerin hangisinde ünlü düşmesi vardır?", o: ["kitabı", "ağzı", "evleri", "gözü"], c: 1 },
+  { ders: "turkce", s: "Aşağıdaki cümlelerin hangisinde \"de\" bağlacının yazımı yanlıştır?", o: ["Sen de bizimle gel.", "Evde kimse yoktu.", "Bende bu kitabı okudum.", "Okulda da çok çalışıyor."], c: 2 },
+  { ders: "turkce", s: "Aşağıdakilerin hangisi eş anlamlı bir kelime çiftidir?", o: ["geniş - dar", "cevap - yanıt", "eski - yeni", "ak - kara"], c: 1 },
+  { ders: "turkce", s: "\"Çocuk, bahçede top oynuyor.\" cümlesinin yüklemi hangisidir?", o: ["Çocuk", "bahçede", "top", "oynuyor"], c: 3 },
+
+  { ders: "matematik", s: "3 + 4 × 2 işleminin sonucu kaçtır?", o: ["14", "11", "10", "24"], c: 1 },
+  { ders: "matematik", s: "2⁵ kaça eşittir?", o: ["10", "25", "32", "64"], c: 2 },
+  { ders: "matematik", s: "%20'si 30 olan sayı kaçtır?", o: ["60", "120", "150", "600"], c: 2 },
+  { ders: "matematik", s: "2x + 5 = 17 ise x kaçtır?", o: ["6", "11", "8,5", "12"], c: 0 },
+  { ders: "matematik", s: "İki basamaklı en büyük asal sayı hangisidir?", o: ["99", "97", "91", "89"], c: 1 },
+  { ders: "matematik", s: "f(x) = x² − 3x ise f(4) kaçtır?", o: ["4", "7", "28", "−4"], c: 0 },
+
+  { ders: "fizik", s: "Hızın SI birim sistemindeki birimi hangisidir?", o: ["m/s", "km", "N", "J"], c: 0 },
+  { ders: "fizik", s: "2 kg kütleli bir cisme 10 N net kuvvet uygulanırsa cismin ivmesi kaç m/s² olur?", o: ["20", "5", "12", "0,2"], c: 1 },
+  { ders: "fizik", s: "12 V gerilime bağlı 4 Ω'luk dirençten geçen akım kaç amperdir?", o: ["48", "3", "8", "16"], c: 1 },
+
+  { ders: "kimya", s: "Suyun kimyasal formülü hangisidir?", o: ["CO₂", "H₂O₂", "H₂O", "NaCl"], c: 2 },
+  { ders: "kimya", s: "Periyodik tablodaki soy gazlar hangi gruptadır?", o: ["1A", "2A", "7A", "8A"], c: 3 },
+  { ders: "kimya", s: "pH değeri 3 olan bir çözelti için hangisi doğrudur?", o: ["Asidiktir", "Baziktir", "Nötrdür", "Saf sudur"], c: 0 },
+
+  { ders: "biyoloji", s: "Bitki hücrelerinde fotosentez hangi organelde gerçekleşir?", o: ["Mitokondri", "Ribozom", "Kloroplast", "Golgi cisimciği"], c: 2 },
+  { ders: "biyoloji", s: "Oksijenli solunumla ATP üretiminin büyük kısmının gerçekleştiği organel hangisidir?", o: ["Mitokondri", "Lizozom", "Koful", "Sentrozom"], c: 0 },
+  { ders: "biyoloji", s: "Aşağıdaki bazlardan hangisi DNA'da bulunmaz?", o: ["Adenin", "Guanin", "Sitozin", "Urasil"], c: 3 },
+
+  { ders: "edebiyat", s: "İstiklal Marşı'nın şairi kimdir?", o: ["Ziya Gökalp", "Mehmet Akif Ersoy", "Namık Kemal", "Tevfik Fikret"], c: 1 },
+  { ders: "edebiyat", s: "Aşağıdakilerden hangisi Servet-i Fünun dönemi yazarıdır?", o: ["Namık Kemal", "Halit Ziya Uşaklıgil", "Orhan Veli Kanık", "Sait Faik Abasıyanık"], c: 1 },
+  { ders: "edebiyat", s: "Şiirde dize sonlarındaki ses benzerliğine ne ad verilir?", o: ["Ölçü", "İmge", "Kafiye (uyak)", "Nazım birimi"], c: 2 },
+
+  { ders: "tarih", s: "Malazgirt Savaşı hangi yılda yapılmıştır?", o: ["1071", "1176", "1299", "1453"], c: 0 },
+  { ders: "tarih", s: "TBMM hangi tarihte açılmıştır?", o: ["19 Mayıs 1919", "23 Nisan 1920", "30 Ağustos 1922", "29 Ekim 1923"], c: 1 },
+  { ders: "tarih", s: "İstanbul'u fetheden Osmanlı padişahı kimdir?", o: ["I. Murat", "Yıldırım Bayezid", "II. Mehmet (Fatih)", "Kanuni Sultan Süleyman"], c: 2 },
+
+  { ders: "cografya", s: "Tamamı Türkiye sınırları içinde kalan en uzun akarsu hangisidir?", o: ["Fırat", "Sakarya", "Yeşilırmak", "Kızılırmak"], c: 3 },
+  { ders: "cografya", s: "Ekvatordan kutuplara doğru gidildikçe ortalama sıcaklık nasıl değişir?", o: ["Artar", "Azalır", "Değişmez", "Önce azalır sonra artar"], c: 1 },
+  { ders: "cografya", s: "Bir haritada ölçek küçüldükçe ne olur?", o: ["Gösterilen ayrıntı azalır", "Gösterilen ayrıntı artar", "Haritadaki bozulma azalır", "Gerçek uzunluklar değişir"], c: 0 },
+
+  { ders: "felsefe", s: "Bilginin kaynağını, imkânını ve sınırlarını inceleyen felsefe dalı hangisidir?", o: ["Epistemoloji (bilgi felsefesi)", "Ontoloji (varlık felsefesi)", "Etik (ahlak felsefesi)", "Estetik (sanat felsefesi)"], c: 0 },
+  { ders: "felsefe", s: "\"Bildiğim tek şey, hiçbir şey bilmediğimdir.\" sözü hangi filozofa aittir?", o: ["Aristoteles", "Platon", "Sokrates", "Descartes"], c: 2 },
+];
+
+const SEVIYE_ANAHTAR = "yks-seviye";
+let cevaplar = new Array(SORULAR.length).fill(null);
+let aktifSoru = 0;
+
+function seviyeSonucu(cvp) {
+  const dersler = {};
+  Object.keys(DERS_AD).forEach((d) => (dersler[d] = { dogru: 0, soru: 0 }));
+  let dogru = 0, bos = 0;
+  SORULAR.forEach((q, i) => {
+    dersler[q.ders].soru++;
+    if (cvp[i] === null) bos++;
+    else if (cvp[i] === q.c) { dogru++; dersler[q.ders].dogru++; }
+  });
+  return { dogru, yanlis: SORULAR.length - dogru - bos, bos, dersler };
+}
+
+function seviyeYorum(oran) {
+  if (oran < 0.4) return "Temel eksik";
+  if (oran < 0.7) return "Orta";
+  return "İyi";
+}
+
+function quizBaslangic() {
+  const kayit = oku(SEVIYE_ANAHTAR, null);
+  const kutu = document.getElementById("quiz-kutu");
+  if (kayit && Array.isArray(kayit.cevaplar) && kayit.cevaplar.length === SORULAR.length) {
+    quizSonucCiz(kayit);
+    return;
+  }
+  kutu.innerHTML = `
+    <p style="margin-bottom:12px">Türkçe, Matematik, Fizik, Kimya, Biyoloji, Edebiyat, Tarih, Coğrafya ve Felsefe'den toplam 30 soru. Yaklaşık 15 dakika sürer.</p>
+    <button class="btn" id="quiz-basla">Teste Başla</button>`;
+  document.getElementById("quiz-basla").addEventListener("click", () => {
+    cevaplar = new Array(SORULAR.length).fill(null);
+    aktifSoru = 0;
+    soruCiz();
+  });
+}
+
+function soruCiz() {
+  const q = SORULAR[aktifSoru];
+  const kutu = document.getElementById("quiz-kutu");
+  const son = aktifSoru === SORULAR.length - 1;
+  kutu.innerHTML = `
+    <div class="quiz-ust"><span>Soru ${aktifSoru + 1} / ${SORULAR.length}</span><span>${cevaplar.filter((c) => c !== null).length} cevaplandı</span></div>
+    <div class="ilerleme"><div style="width:${((aktifSoru + 1) / SORULAR.length) * 100}%"></div></div>
+    <div class="soru-ders">${DERS_AD[q.ders]}</div>
+    <div class="soru-metin">${kacis(q.s)}</div>
+    <div class="secenekler">
+      ${q.o.map((o, i) => `<button class="secenek${cevaplar[aktifSoru] === i ? " secili" : ""}" data-secenek="${i}">${"ABCD"[i]}) ${kacis(o)}</button>`).join("")}
+    </div>
+    <div class="quiz-alt">
+      <button class="btn btn-ghost" id="geri" ${aktifSoru === 0 ? "disabled" : ""}>Geri</button>
+      <button class="btn btn-ghost" id="bos">${cevaplar[aktifSoru] === null ? "Boş bırak" : "Cevabı sil"}</button>
+      <button class="btn" id="ileri">${son ? "Bitir" : "İleri"}</button>
+    </div>`;
+}
+
+document.getElementById("quiz-kutu").addEventListener("click", (e) => {
+  const hedef = e.target.closest("button");
+  if (!hedef) return;
+  if (hedef.dataset.secenek !== undefined) {
+    cevaplar[aktifSoru] = Number(hedef.dataset.secenek);
+    soruCiz();
+  } else if (hedef.id === "geri" && aktifSoru > 0) {
+    aktifSoru--;
+    soruCiz();
+  } else if (hedef.id === "bos") {
+    cevaplar[aktifSoru] = null;
+    if (aktifSoru < SORULAR.length - 1) aktifSoru++;
+    soruCiz();
+  } else if (hedef.id === "ileri") {
+    if (aktifSoru < SORULAR.length - 1) {
+      aktifSoru++;
+      soruCiz();
+    } else {
+      const kayit = { tarih: new Date().toISOString(), cevaplar: cevaplar.slice() };
+      yaz(SEVIYE_ANAHTAR, kayit);
+      quizSonucCiz(kayit);
+      veriDurumu();
+    }
+  } else if (hedef.id === "yeniden") {
+    cevaplar = new Array(SORULAR.length).fill(null);
+    aktifSoru = 0;
+    soruCiz();
+  }
+});
+
+function quizSonucCiz(kayit) {
+  const r = seviyeSonucu(kayit.cevaplar);
+  const barlar = Object.keys(DERS_AD).map((d) => {
+    const x = r.dersler[d];
+    const oran = x.soru ? x.dogru / x.soru : 0;
+    return `<div class="bar-satir"><span>${DERS_AD[d]}</span><div class="bar"><div style="width:${oran * 100}%"></div></div><b>${x.dogru}/${x.soru}</b></div>`;
+  }).join("");
+  const yanlislar = SORULAR.map((q, i) => ({ q, i, c: kayit.cevaplar[i] }))
+    .filter((x) => x.c !== x.q.c)
+    .map((x) => `<li><b>${kacis(x.q.s)}</b><br><small>Doğru cevap: ${"ABCD"[x.q.c]}) ${kacis(x.q.o[x.q.c])}${x.c === null ? " · Boş bıraktın" : ` · Senin cevabın: ${"ABCD"[x.c]}) ${kacis(x.q.o[x.c])}`}</small></li>`)
+    .join("");
+  const zayif = Object.keys(DERS_AD)
+    .filter((d) => r.dersler[d].dogru / r.dersler[d].soru < 0.7)
+    .map((d) => `${DERS_AD[d]} (${seviyeYorum(r.dersler[d].dogru / r.dersler[d].soru).toLowerCase()})`);
+
+  document.getElementById("quiz-kutu").innerHTML = `
+    <div class="results" style="margin-top:0;grid-template-columns:repeat(3,1fr)">
+      <div class="res-card"><h4>Doğru</h4><div class="res-big">${r.dogru}</div></div>
+      <div class="res-card"><h4>Yanlış</h4><div class="res-big">${r.yanlis}</div></div>
+      <div class="res-card"><h4>Boş</h4><div class="res-big">${r.bos}</div></div>
+    </div>
+    <h3>Derslere göre</h3>
+    ${barlar}
+    <p style="margin-top:12px">${zayif.length ? `Öncelik vermen gereken dersler: <b>${zayif.join(", ")}</b>.` : "Temelin bütün derslerde sağlam görünüyor 👏"}</p>
+    ${yanlislar ? `<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">Yanlış ve boş bıraktığın soruların cevapları</summary><ol style="margin:10px 0 0 20px;display:flex;flex-direction:column;gap:8px">${yanlislar}</ol></details>` : ""}
+    <p class="puan-kaynak">Test tarihi: ${new Date(kayit.tarih).toLocaleDateString("tr-TR")} · Bu sonuç aşağıdaki çalışma programında kullanılır.</p>
+    <div class="actions"><button class="btn btn-ghost" id="yeniden">Testi yeniden çöz</button></div>`;
+}
+
+// ---------- Çalışma programı ----------
+const GUNLER = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
+const GUN_TAM = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+const AYAR_ANAHTAR = "yks-program-ayar";
+
+// w: o alandaki puan ağırlığı (soru sayısı × 2026 puan katsayısı)
+// deneme: [test kodu, soru sayısı] — denemelerdeki netlerden başarı oranı çıkarılır
+const PLAN_DERSLER = [
+  { id: "t_tr", ad: "TYT Türkçe", quiz: "turkce", deneme: [["tr", 40]], w: { TYT: 40 * 2.71, SAY: 40 * 1.23, EA: 40 * 1.20, SOZ: 40 * 1.14 } },
+  { id: "t_mat", ad: "TYT Matematik", quiz: "matematik", deneme: [["mat", 40]], w: { TYT: 40 * 3.25, SAY: 40 * 1.47, EA: 40 * 1.43, SOZ: 40 * 1.37 } },
+  { id: "t_fiz", ad: "TYT Fizik", quiz: "fizik", deneme: [["fen", 20]], w: { TYT: 7 * 2.58, SAY: 7 * 1.17, EA: 7 * 1.14, SOZ: 7 * 1.09 } },
+  { id: "t_kim", ad: "TYT Kimya", quiz: "kimya", deneme: [["fen", 20]], w: { TYT: 7 * 2.58, SAY: 7 * 1.17, EA: 7 * 1.14, SOZ: 7 * 1.09 } },
+  { id: "t_bio", ad: "TYT Biyoloji", quiz: "biyoloji", deneme: [["fen", 20]], w: { TYT: 6 * 2.58, SAY: 6 * 1.17, EA: 6 * 1.14, SOZ: 6 * 1.09 } },
+  { id: "t_tar", ad: "TYT Tarih", quiz: "tarih", deneme: [["sos", 20]], w: { TYT: 5 * 3.13, SAY: 5 * 1.42, EA: 5 * 1.38, SOZ: 5 * 1.32 } },
+  { id: "t_cog", ad: "TYT Coğrafya", quiz: "cografya", deneme: [["sos", 20]], w: { TYT: 5 * 3.13, SAY: 5 * 1.42, EA: 5 * 1.38, SOZ: 5 * 1.32 } },
+  { id: "t_fel", ad: "TYT Felsefe", quiz: "felsefe", deneme: [["sos", 20]], w: { TYT: 5 * 3.13, SAY: 5 * 1.42, EA: 5 * 1.38, SOZ: 5 * 1.32 } },
+  { id: "t_din", ad: "TYT Din Kültürü", quiz: null, deneme: [["sos", 20]], w: { TYT: 5 * 3.13, SAY: 5 * 1.42, EA: 5 * 1.38, SOZ: 5 * 1.32 } },
+  { id: "a_mat", ad: "AYT Matematik", quiz: "matematik", deneme: [["amat", 40]], w: { SAY: 40 * 3.02, EA: 40 * 2.94 } },
+  { id: "a_fiz", ad: "AYT Fizik", quiz: "fizik", deneme: [["fiz", 14]], w: { SAY: 14 * 2.53 } },
+  { id: "a_kim", ad: "AYT Kimya", quiz: "kimya", deneme: [["kim", 13]], w: { SAY: 13 * 2.52 } },
+  { id: "a_bio", ad: "AYT Biyoloji", quiz: "biyoloji", deneme: [["bio", 13]], w: { SAY: 13 * 2.61 } },
+  { id: "a_edb", ad: "AYT Edebiyat", quiz: "edebiyat", deneme: [["edb", 24]], w: { EA: 24 * 3.28, SOZ: 24 * 3.13 } },
+  { id: "a_tar", ad: "AYT Tarih", quiz: "tarih", deneme: [["tar1", 10], ["tar2", 11]], w: { EA: 10 * 2.37, SOZ: 10 * 2.26 + 11 * 3.24 } },
+  { id: "a_cog", ad: "AYT Coğrafya", quiz: "cografya", deneme: [["cog1", 6], ["cog2", 11]], w: { EA: 6 * 2.55, SOZ: 6 * 2.43 + 11 * 2.93 } },
+  { id: "a_fel", ad: "AYT Felsefe Grubu", quiz: "felsefe", deneme: [["fel", 12]], w: { SOZ: 12 * 4.20 } },
+  { id: "a_din", ad: "AYT Din Kültürü", quiz: null, deneme: [["din", 6]], w: { SOZ: 6 * 1.99 } },
+];
+
+// Matematik ve uzun derslerde 2 saatlik bloklar daha verimli olduğu için birleştirilir.
+const UZUN_BLOK = new Set(["t_mat", "a_mat", "t_tr", "a_edb"]);
+
+function saatSecimleriCiz() {
+  const ayar = oku(AYAR_ANAHTAR, null);
+  const saatler = ayar && Array.isArray(ayar.saatler) ? ayar.saatler : [3, 3, 3, 3, 3, 5, 5];
+  if (ayar && ayar.alan) document.getElementById("alan").value = ayar.alan;
+  document.getElementById("gun-saat").innerHTML = GUNLER.map((g, i) => `
+    <label>${g}
+      <select data-gun="${i}">
+        ${Array.from({ length: 13 }, (_, h) => `<option value="${h}"${h === saatler[i] ? " selected" : ""}>${h} sa</option>`).join("")}
+      </select>
+    </label>`).join("");
+  toplamSaatYaz();
+}
+
+function saatleriAl() {
+  return [...document.querySelectorAll("#gun-saat select")].map((s) => Number(s.value));
+}
+
+function toplamSaatYaz() {
+  const t = saatleriAl().reduce((a, b) => a + b, 0);
+  document.getElementById("toplam-saat").textContent = `Haftalık toplam: ${t} saat`;
+}
+
+function sonDenemeler() {
+  const liste = oku("yks-denemeler", []);
+  return Array.isArray(liste) ? liste.slice(-3) : [];
+}
+
+// 0-1 arası başarı oranı; veri yoksa null
+function dersBasarisi(ders) {
+  const kayit = oku(SEVIYE_ANAHTAR, null);
+  let quizOran = null;
+  if (ders.quiz && kayit && Array.isArray(kayit.cevaplar) && kayit.cevaplar.length === SORULAR.length) {
+    const x = seviyeSonucu(kayit.cevaplar).dersler[ders.quiz];
+    quizOran = x.dogru / x.soru;
+  }
+  const oranlar = [];
+  sonDenemeler().forEach((d) => {
+    if (!d.testler) return;
+    let net = 0, soru = 0;
+    ders.deneme.forEach(([kod, s]) => {
+      if (typeof d.testler[kod] === "number") { net += d.testler[kod]; soru += s; }
+    });
+    if (soru > 0) oranlar.push(Math.min(1, Math.max(0, net / soru)));
+  });
+  const denemeOran = oranlar.length ? oranlar.reduce((a, b) => a + b, 0) / oranlar.length : null;
+  if (quizOran !== null && denemeOran !== null) return 0.4 * quizOran + 0.6 * denemeOran;
+  if (denemeOran !== null) return denemeOran;
+  return quizOran;
+}
+
+function gorev(basari) {
+  if (basari === null) return "Konu tekrarı + 30 soru";
+  if (basari < 0.4) return "Konu anlatımı + 20 temel soru";
+  if (basari < 0.7) return "Soru çözümü: 40 soru + yanlış analizi";
+  return "Zor ve karışık 40 soru + yanlış analizi";
+}
+
+function veriDurumu() {
+  const kayit = oku(SEVIYE_ANAHTAR, null);
+  const denemeSayisi = sonDenemeler().filter((d) => d.testler).length;
+  const parcalar = [];
+  parcalar.push(kayit ? "Seviye testi sonucun kullanılacak" : "Seviye testini henüz çözmedin");
+  parcalar.push(denemeSayisi ? `son ${denemeSayisi} denemenin ders netleri kullanılacak` : "ders netleri kayıtlı deneme yok");
+  document.getElementById("veri-durum").textContent = parcalar.join(", ") + ".";
+}
+
+function programOlustur() {
+  const alan = document.getElementById("alan").value;
+  const saatler = saatleriAl();
+  yaz(AYAR_ANAHTAR, { alan, saatler });
+  const kutu = document.getElementById("program-sonuc");
+  const toplam = saatler.reduce((a, b) => a + b, 0);
+  if (toplam === 0) {
+    kutu.innerHTML = `<div class="card" style="margin-top:12px"><p class="muted" style="margin:0">En az bir güne çalışma saati seç.</p></div>`;
+    return;
+  }
+
+  // Haftalık deneme: toplam 12 saat ve üstüyse, tercihen hafta sonu 3 saatlik bir gün ayır.
+  const kapasite = saatler.slice();
+  let denemeGunu = -1;
+  if (toplam >= 12) {
+    const adaylar = [6, 5, 4, 3, 2, 1, 0].filter((g) => kapasite[g] >= 3);
+    if (adaylar.length) {
+      denemeGunu = adaylar[0];
+      kapasite[denemeGunu] -= 3;
+    }
+  }
+
+  const dersler = PLAN_DERSLER.filter((d) => d.w[alan]).map((d) => {
+    const basari = dersBasarisi(d);
+    const ihtiyac = basari === null ? 0.75 : 1.2 - basari;
+    return { ...d, basari, skor: d.w[alan] * ihtiyac };
+  });
+
+  // Saatleri skorlara göre orantılı dağıt (en büyük kalan yöntemi).
+  const birim = kapasite.reduce((a, b) => a + b, 0);
+  let secili = dersler.slice().sort((a, b) => b.skor - a.skor);
+  if (birim < secili.length) secili = secili.slice(0, birim);
+  const skorToplam = secili.reduce((a, d) => a + d.skor, 0);
+  secili.forEach((d) => {
+    d.tam = (d.skor / skorToplam) * birim;
+    d.saat = Math.floor(d.tam);
+  });
+  let kalan = birim - secili.reduce((a, d) => a + d.saat, 0);
+  secili.slice().sort((a, b) => (b.tam - b.saat) - (a.tam - a.saat)).forEach((d) => {
+    if (kalan > 0) { d.saat++; kalan--; }
+  });
+  // Her derse en az 1 saat düşsün.
+  secili.forEach((d) => {
+    if (d.saat === 0) {
+      const veren = secili.reduce((m, x) => (x.saat > m.saat ? x : m), secili[0]);
+      if (veren.saat > 1) { veren.saat--; d.saat = 1; }
+    }
+  });
+
+  // Günlere yerleştir: aynı gün aynı dersi tekrar etmemeye çalış.
+  const kalanSaat = {};
+  secili.forEach((d) => (kalanSaat[d.id] = d.saat));
+  const hafta = GUNLER.map(() => []);
+  for (let g = 0; g < 7; g++) {
+    let c = kapasite[g];
+    const bugun = new Set();
+    while (c > 0) {
+      const adaylar = secili.filter((d) => kalanSaat[d.id] > 0)
+        .sort((a, b) => kalanSaat[b.id] - kalanSaat[a.id] || b.skor - a.skor);
+      if (!adaylar.length) break;
+      const ders = adaylar.find((d) => !bugun.has(d.id)) || adaylar[0];
+      const sure = UZUN_BLOK.has(ders.id) && kalanSaat[ders.id] >= 2 && c >= 2 ? 2 : 1;
+      const onceki = hafta[g][hafta[g].length - 1];
+      if (onceki && onceki.ders && onceki.ders.id === ders.id) onceki.sure += sure;
+      else hafta[g].push({ ders, sure });
+      kalanSaat[ders.id] -= sure;
+      c -= sure;
+      bugun.add(ders.id);
+    }
+    if (g === denemeGunu) hafta[g].push({ deneme: true, sure: 3 });
+  }
+
+  const gunHtml = hafta.map((bloklar, g) => `
+    <div class="gun-kart">
+      <h4>${GUN_TAM[g]} <span>${saatler[g]} saat</span></h4>
+      ${bloklar.length ? bloklar.map((b) => b.deneme
+        ? `<div class="blok deneme"><b>Deneme + analiz</b><small>${b.sure} saat · Bir hafta TYT, bir hafta AYT denemesi çöz, ardından yanlışlarını incele</small></div>`
+        : `<div class="blok"><b>${b.ders.ad}</b><small>${b.sure} saat · ${gorev(b.ders.basari)}</small></div>`).join("")
+        : `<p class="bos-gun">Dinlenme günü</p>`}
+    </div>`).join("");
+
+  const dagilim = secili.slice().sort((a, b) => b.saat - a.saat);
+  const enCok = Math.max(...dagilim.map((d) => d.saat));
+  const ozet = dagilim.map((d) => `
+    <div class="bar-satir"><span>${d.ad}</span><div class="bar"><div style="width:${(d.saat / enCok) * 100}%"></div></div><b>${d.saat} sa</b></div>`).join("");
+  const disarida = dersler.length - secili.length;
+  const zayiflar = dersler.filter((d) => d.basari !== null && d.basari < 0.5)
+    .sort((a, b) => a.basari - b.basari).slice(0, 3).map((d) => d.ad);
+
+  kutu.innerHTML = `
+    <h3>Bu haftanın programı</h3>
+    <p class="muted" style="margin:0">${zayiflar.length ? `En çok zorlandığın dersler (<b>${zayiflar.join(", ")}</b>) ve puana etkisi büyük dersler öne alındı.` : "Puana etkisi büyük derslere ve veri olmayan derslere dengeli saat ayrıldı."}${disarida > 0 ? ` Saatin az olduğu için ${disarida} derse bu hafta yer açılamadı, saatini artırırsan onlar da eklenir.` : ""}</p>
+    <div class="hafta">${gunHtml}</div>
+    <div class="card" style="margin-top:12px">
+      <h4 style="margin-bottom:6px">Derslere ayrılan saat</h4>
+      <div class="ozet-liste">${ozet}</div>
+    </div>`;
+}
+
+function aiMetni() {
+  const alanAd = { SAY: "Sayısal", EA: "Eşit Ağırlık", SOZ: "Sözel", TYT: "Sadece TYT" }[document.getElementById("alan").value];
+  const saatler = saatleriAl();
+  const satirlar = [];
+  satirlar.push("YKS'ye hazırlanan bir öğrenciyim ve senden haftalık çalışma programı istiyorum.");
+  satirlar.push(`Alanım: ${alanAd}.`);
+  satirlar.push(`Günlük çalışma saatlerim: ${GUN_TAM.map((g, i) => `${g} ${saatler[i]} saat`).join(", ")} (haftalık toplam ${saatler.reduce((a, b) => a + b, 0)} saat).`);
+  const kayit = oku(SEVIYE_ANAHTAR, null);
+  if (kayit && Array.isArray(kayit.cevaplar) && kayit.cevaplar.length === SORULAR.length) {
+    const r = seviyeSonucu(kayit.cevaplar);
+    satirlar.push(`30 soruluk temel seviye testi sonucum (doğru/soru): ${Object.keys(DERS_AD).map((d) => `${DERS_AD[d]} ${r.dersler[d].dogru}/${r.dersler[d].soru}`).join(", ")}.`);
+  }
+  const denemeler = sonDenemeler();
+  if (denemeler.length) {
+    satirlar.push("Son denemelerim:");
+    denemeler.forEach((d) => {
+      const detay = d.testler ? " (" + Object.entries(d.testler).map(([k, v]) => `${k}: ${v}`).join(", ") + ")" : "";
+      satirlar.push(`- ${d.ad}: TYT ${d.tytNet} net, AYT ${d.aytNet} net${detay}`);
+    });
+    satirlar.push("Test kısaltmaları: tr Türkçe, sos Sosyal, mat Temel Matematik, fen Fen, amat AYT Matematik, fiz Fizik, kim Kimya, bio Biyoloji, edb Edebiyat, tar1/tar2 Tarih, cog1/cog2 Coğrafya, fel Felsefe Grubu, din Din Kültürü.");
+  }
+  satirlar.push("Bu bilgilere göre günlere ve saatlere bölünmüş, konu konu haftalık bir çalışma programı hazırla. Eksik olduğum derslere öncelik ver, her derste hangi konuyu çalışacağımı ve kaç soru çözeceğimi yaz, haftada bir deneme ve tekrar zamanı ekle.");
+  return satirlar.join("\n");
+}
+
+document.getElementById("gun-saat").addEventListener("change", toplamSaatYaz);
+document.getElementById("olustur").addEventListener("click", programOlustur);
+document.getElementById("ai-kopyala").addEventListener("click", async () => {
+  const alan = document.getElementById("ai-metin");
+  const buton = document.getElementById("ai-kopyala");
+  alan.value = aiMetni();
+  alan.classList.remove("gizli");
+  let kopyalandi = false;
+  try {
+    await navigator.clipboard.writeText(alan.value);
+    kopyalandi = true;
+  } catch (e) {
+    alan.select();
+    try { kopyalandi = document.execCommand("copy"); } catch (e2) { kopyalandi = false; }
+  }
+  buton.textContent = kopyalandi ? "Kopyalandı ✓ Şimdi yapay zekâ sohbetine yapıştır" : "Metni seçip kendin kopyala";
+});
+
+quizBaslangic();
+saatSecimleriCiz();
+veriDurumu();
+if (oku(AYAR_ANAHTAR, null)) programOlustur();
+
+  </script>
+</body>
+</html>
