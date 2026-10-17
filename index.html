@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YKS Hazırlık</title>
+  <meta name="description" content="YKS geri sayımı, TYT/AYT net hesaplama, SAY/EA/SÖZ puan ve sıralama hesaplama.">
+  <style>
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #1c1f2a;
+  --muted: #6b7080;
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --border: #e3e5ee;
+  --warn-bg: #fff6e5;
+  --warn-text: #8a5a00;
+  --radius: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12131a;
+    --surface: #1c1e28;
+    --text: #eceef5;
+    --muted: #9a9fb0;
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --border: #2c2f3d;
+    --warn-bg: #2e2614;
+    --warn-text: #f0c46c;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo { font-weight: 800; font-size: 1.25rem; color: var(--text); text-decoration: none; }
+.logo span { color: var(--primary); }
+nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-weight: 500; }
+nav a:hover { color: var(--primary); }
+
+.hero {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  text-align: center;
+  padding: 72px 0;
+}
+.hero h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 12px; }
+.hero p { opacity: .9; margin-bottom: 24px; }
+.hero .btn { background: #fff; color: var(--primary-dark); }
+
+.btn {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.section { padding: 56px 16px; }
+.section h2 { font-size: 1.6rem; margin-bottom: 6px; }
+.section h3 { font-size: 1.15rem; margin: 24px 0 10px; }
+.muted { color: var(--muted); margin-bottom: 20px; }
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.cd-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  padding: 20px 8px;
+}
+.cd-box span {
+  display: block;
+  font-size: clamp(1.6rem, 6vw, 2.6rem);
+  font-weight: 800;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.cd-box small { color: var(--muted); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.net-table { width: 100%; border-collapse: collapse; }
+.net-table th, .net-table td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.net-table th { color: var(--muted); font-weight: 600; font-size: .9rem; }
+.net-table td small { color: var(--muted); display: block; font-size: .8rem; }
+.net-table .grup td {
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding-top: 14px;
+}
+input[type="number"] {
+  width: 64px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+input.hata { border-color: #e5484d; }
+.net-table .net { font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
+.net-table tfoot td { font-weight: 800; border-bottom: none; }
+.net-table tfoot td:last-child { color: var(--primary); font-size: 1.1rem; }
+
+.obp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+}
+.obp-row label { display: flex; align-items: center; gap: 8px; }
+.obp-row input[type="number"] { width: 90px; }
+.obp-row .muted { margin: 0; font-size: .9rem; }
+
+.actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.res-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.res-card h4 { font-size: 1rem; margin-bottom: 8px; }
+.res-card h4 small { color: var(--muted); font-weight: 500; }
+.res-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: .92rem;
+  padding: 3px 0;
+}
+.res-line span:first-child { color: var(--muted); }
+.res-line b { font-variant-numeric: tabular-nums; }
+.res-big {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.res-card .yok { color: var(--muted); font-size: .9rem; }
+
+.note {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: .9rem;
+  margin-top: 16px;
+}
+.sources { font-size: .85rem; color: var(--muted); margin-top: 12px; }
+.sources a { color: var(--primary); }
+
+.kaydet-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.kaydet-row input[type="text"] {
+  flex: 1;
+  min-width: 160px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+}
+.kaydet-mesaj { color: var(--primary); font-size: .9rem; font-weight: 600; }
+
+.chart-wrap { margin-bottom: 12px; }
+.chart-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+#grafik { width: 100%; height: auto; display: block; }
+#grafik text { fill: var(--muted); font-size: 20px; font-family: inherit; }
+#grafik .eksen { stroke: var(--border); }
+#grafik .cizgi { stroke: var(--primary); stroke-width: 4; fill: none; }
+#grafik .nokta { fill: var(--primary); }
+#grafik .etiket { fill: var(--text); font-weight: 700; }
+.deneme-table td:last-child { text-align: right; }
+.sil {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 2px 6px;
+}
+.sil:hover { color: #e5484d; }
+
+.site-footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 520px) {
+  nav a { margin-left: 12px; font-size: .9rem; }
+  .countdown { gap: 8px; }
+  input[type="number"] { width: 52px; }
+  .net-table th, .net-table td { padding: 8px 4px; }
+}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo">YKS<span>Hazırlık</span></a>
+      <nav>
+        <a href="#geri-sayim">Geri Sayım</a>
+        <a href="#hesapla">Puan Hesapla</a>
+        <a href="#denemeler">Denemeler</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Hedefine bir adım daha yaklaş</h1>
+        <p>Sınava kalan süreyi takip et, netlerini gir, puanını ve sıralamanı gör.</p>
+        <a href="#hesapla" class="btn">Puanımı Hesapla</a>
+      </div>
+    </section>
+
+    <section id="geri-sayim" class="container section">
+      <h2>YKS'ye Kalan Süre</h2>
+      <p class="muted" id="sinav-tarihi-yazi"></p>
+      <div class="countdown">
+        <div class="cd-box"><span id="cd-gun">0</span><small>Gün</small></div>
+        <div class="cd-box"><span id="cd-saat">0</span><small>Saat</small></div>
+        <div class="cd-box"><span id="cd-dakika">0</span><small>Dakika</small></div>
+        <div class="cd-box"><span id="cd-saniye">0</span><small>Saniye</small></div>
+      </div>
+    </section>
+
+    <section id="hesapla" class="container section">
+      <h2>Net, Puan ve Sıralama Hesaplama</h2>
+      <p class="muted">Doğru ve yanlış sayılarını gir. 4 yanlış 1 doğruyu götürür. Sadece girdiğin testler hesaba katılır.</p>
+
+      <h3>TYT</h3>
+      <div class="card">
+        <table class="net-table">
+          <thead><tr><th>Test</th><th>Doğru</th><th>Yanlış</th><th>Net</th></tr></thead>
+          <tbody id="tyt-body"></tbody>
+          <tfoot><tr><td>TYT Toplam</td><td></td><td></td><td id="tyt-top">0</td></tr></tfoot>
+        </table>
+      </div>
+
+      <h3>AYT</h3>
+      <div class="card">
+        <table class="net-table">
+          <thead><tr><th>Test</th><th>Doğru</th><th>Yanlış</th><th>Net</th></tr></thead>
+          <tbody id="ayt-body"></tbody>
+          <tfoot><tr><td>AYT Toplam</td><td></td><td></td><td id="ayt-top">0</td></tr></tfoot>
+        </table>
+      </div>
+
+      <h3>Diploma Notu (OBP)</h3>
+      <div class="card obp-row">
+        <label>Diploma notu <input type="number" id="diploma" min="50" max="100" step="0.01" placeholder="örn. 85"></label>
+        <label><input type="checkbox" id="gecen-yil"> Geçen yıl bir programa yerleştim</label>
+        <p class="muted" id="obp-yazi">Diploma notunu girmezsen yerleştirme puanı hesaplanmaz.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" id="temizle">Temizle</button>
+      </div>
+
+      <h3>Sonuçlar</h3>
+      <div class="results" id="sonuclar"></div>
+
+      <h3>Bu Denemeyi Kaydet</h3>
+      <div class="kaydet-row">
+        <input type="text" id="deneme-adi" maxlength="40" placeholder="Deneme adı (örn. 3D Türkiye Geneli 1)">
+        <button class="btn" id="kaydet">Kaydet</button>
+        <span class="kaydet-mesaj" id="kaydet-mesaj"></span>
+      </div>
+
+      <div class="note">
+        Puanlar 2026 YKS sonuçlarından çıkarılan katsayılarla, sıralamalar ÖSYM'nin 2026 YKS puan dağılımıyla hesaplanır. ÖSYM katsayıları önceden açıklamaz, her yıl o yılın ortalamasına göre değişir. Bu yüzden sonuçlar tahminidir: puan genelde birkaç puan, sıralama ise sınavın zorluğuna göre daha fazla değişebilir.
+      </div>
+      <p class="sources">
+        Kaynaklar:
+        <a href="https://cdn.osym.gov.tr/pdfdokuman/2026/YKS/SB/sayisal_ykdd21072026.pdf" target="_blank" rel="noopener">ÖSYM 2026-YKS Sayısal Bilgiler</a> ·
+        <a href="https://ertansinansahin.com/yks-tyt-ayt-puan-hesaplama-ve-siralama-hesaplama/" target="_blank" rel="noopener">Ertan Sinan Şahin 2026 katsayıları</a> ·
+        <a href="https://yokatlas.yok.gov.tr/" target="_blank" rel="noopener">YÖK Atlas</a> (bölüm taban sıralamalarını karşılaştırmak için)
+      </p>
+    </section>
+    <section id="denemeler" class="container section">
+      <h2>Deneme Takibi</h2>
+      <p class="muted">Kaydettiğin denemeler sadece bu cihazdaki tarayıcında saklanır. Başka cihazda görünmez, tarayıcı verilerini silersen kaybolur.</p>
+      <div id="deneme-icerik"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>YKS Hazırlık · Başarılar! 🎯</p>
+    </div>
+  </footer>
+
+  <script>
+// Sınav tarihi: ÖSYM 2027 takvimini açıklayınca burayı güncelle.
+const SINAV_TARIHI = new Date("2027-06-19T10:15:00+03:00");
+
+// ---------- Testler ----------
+const TYT_TESTLER = [
+  { id: "tr", ad: "Türkçe", soru: 40 },
+  { id: "sos", ad: "Sosyal Bilimler", soru: 20 },
+  { id: "mat", ad: "Temel Matematik", soru: 40 },
+  { id: "fen", ad: "Fen Bilimleri", soru: 20 },
+];
+
+const AYT_TESTLER = [
+  { grup: "Matematik" },
+  { id: "amat", ad: "Matematik", soru: 40 },
+  { grup: "Fen Bilimleri" },
+  { id: "fiz", ad: "Fizik", soru: 14 },
+  { id: "kim", ad: "Kimya", soru: 13 },
+  { id: "bio", ad: "Biyoloji", soru: 13 },
+  { grup: "Türk Dili ve Edebiyatı - Sosyal Bilimler 1" },
+  { id: "edb", ad: "Edebiyat", soru: 24 },
+  { id: "tar1", ad: "Tarih-1", soru: 10 },
+  { id: "cog1", ad: "Coğrafya-1", soru: 6 },
+  { grup: "Sosyal Bilimler 2" },
+  { id: "tar2", ad: "Tarih-2", soru: 11 },
+  { id: "cog2", ad: "Coğrafya-2", soru: 11 },
+  { id: "fel", ad: "Felsefe Grubu", soru: 12 },
+  { id: "din", ad: "Din Kültürü / Ek Felsefe", soru: 6 },
+];
+
+// ---------- 2026 katsayıları (1 netin puana katkısı) ----------
+// Kaynak: ertansinansahin.com 2026 katsayı tablosu.
+const KATSAYI = {
+  TYT: { taban: 150.68, tr: 2.71, sos: 3.13, mat: 3.25, fen: 2.58 },
+  SAY: { taban: 121.65, tr: 1.23, sos: 1.42, mat: 1.47, fen: 1.17,
+         amat: 3.02, fiz: 2.53, kim: 2.52, bio: 2.61 },
+  EA:  { taban: 123.34, tr: 1.20, sos: 1.38, mat: 1.43, fen: 1.14,
+         amat: 2.94, edb: 3.28, tar1: 2.37, cog1: 2.55 },
+  SOZ: { taban: 122.72, tr: 1.14, sos: 1.32, mat: 1.37, fen: 1.09,
+         edb: 3.13, tar1: 2.26, cog1: 2.43, tar2: 3.24, cog2: 2.93, fel: 4.20, din: 1.99 },
+};
+
+// ---------- ÖSYM 2026-YKS yığınsal puan dağılımı ----------
+// Her eşik için "bu puan ve üstünü alan aday sayısı".
+// Kaynak: ÖSYM 2026-YKS Sayısal Bilgiler, Tablo 3 (ham) ve Tablo 4 (yerleştirme).
+const HAM_ESIK = [500, 480, 460, 440, 420, 400, 380, 360, 340, 320, 300, 280, 260, 240, 220, 200, 180, 160, 140, 120, 100];
+const HAM_DAGILIM = {
+  TYT: [5, 822, 5524, 17050, 37770, 67394, 106404, 155008, 218156, 302758, 417935, 577094, 787244, 1045340, 1332391, 1630698, 1914717, 2125244, 2184873, 2187723, 2187743],
+  SAY: [1, 1453, 8786, 22370, 39624, 58728, 78806, 100553, 125045, 153304, 187034, 228643, 279885, 344536, 430074, 549793, 721488, 923753, 1078515, 1134006, 1135718],
+  SOZ: [1, 10, 74, 214, 560, 1418, 3936, 10259, 23653, 47292, 86560, 148959, 238848, 360487, 515916, 699304, 873860, 998826, 1065157, 1084720, 1085698],
+  EA:  [1, 52, 307, 874, 2097, 4545, 9486, 23452, 50608, 89520, 140784, 210499, 308127, 440752, 615366, 832251, 1069239, 1272506, 1391240, 1420558, 1421290],
+};
+const YER_ESIK = [560, 550, 530, 510, 490, 470, 450, 430, 410, 390, 370, 350, 330, 310, 290, 270, 250, 230, 210, 190, 170, 150, 130, 115];
+const YER_DAGILIM = {
+  TYT: [1, 112, 2045, 8638, 22600, 45313, 76021, 115071, 163211, 225038, 305570, 412011, 553526, 735519, 961261, 1219171, 1499060, 1782951, 2033331, 2166477, 2186977, 2187734, 2187742, 2187743],
+  SAY: [1, 154, 3500, 12887, 27402, 44919, 63669, 83511, 105112, 129485, 157778, 191247, 232317, 282213, 344726, 425443, 533920, 681176, 858167, 1019046, 1117304, 1135198, 1135713, 1135718],
+  SOZ: [1, 4, 14, 69, 221, 606, 1566, 4058, 10184, 22750, 45237, 82479, 140496, 223004, 333238, 474443, 642816, 814264, 953036, 1040347, 1078859, 1085505, 1085697, 1085698],
+  EA:  [1, 12, 98, 394, 1118, 2482, 5299, 12363, 29700, 58772, 97839, 148570, 215631, 307918, 429479, 585271, 775922, 990764, 1196809, 1347025, 1412649, 1421093, 1421289, 1421290],
+};
+
+const PUAN_TURLERI = [
+  { kod: "TYT", ad: "TYT" },
+  { kod: "SAY", ad: "Sayısal", kisa: "SAY" },
+  { kod: "EA", ad: "Eşit Ağırlık", kisa: "EA" },
+  { kod: "SOZ", ad: "Sözel", kisa: "SÖZ" },
+];
+
+// ---------- Geri sayım ----------
+function geriSayim() {
+  const kalan = Math.max(SINAV_TARIHI - new Date(), 0);
+  document.getElementById("cd-gun").textContent = Math.floor(kalan / 86400000);
+  document.getElementById("cd-saat").textContent = Math.floor((kalan / 3600000) % 24);
+  document.getElementById("cd-dakika").textContent = Math.floor((kalan / 60000) % 60);
+  document.getElementById("cd-saniye").textContent = Math.floor((kalan / 1000) % 60);
+}
+
+document.getElementById("sinav-tarihi-yazi").textContent =
+  "Sınav tarihi: " +
+  SINAV_TARIHI.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) +
+  " (tahmini)";
+geriSayim();
+setInterval(geriSayim, 1000);
+
+// ---------- Tablolar ----------
+function tabloCiz(tbodyId, testler) {
+  const tbody = document.getElementById(tbodyId);
+  testler.forEach((t) => {
+    const tr = document.createElement("tr");
+    if (t.grup) {
+      tr.className = "grup";
+      tr.innerHTML = `<td colspan="4">${t.grup}</td>`;
+    } else {
+      tr.innerHTML = `
+        <td>${t.ad}<small>${t.soru} soru</small></td>
+        <td><input type="number" min="0" max="${t.soru}" inputmode="numeric" id="${t.id}-d"></td>
+        <td><input type="number" min="0" max="${t.soru}" inputmode="numeric" id="${t.id}-y"></td>
+        <td class="net" id="${t.id}-net">0</td>`;
+    }
+    tbody.appendChild(tr);
+  });
+}
+
+tabloCiz("tyt-body", TYT_TESTLER);
+tabloCiz("ayt-body", AYT_TESTLER);
+
+// ---------- Hesaplama ----------
+function sayi(id) {
+  const n = parseInt(document.getElementById(id).value, 10);
+  return Number.isNaN(n) || n < 0 ? 0 : n;
+}
+
+function iki(n) {
+  return n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function netler(testler) {
+  const sonuc = {};
+  let toplam = 0;
+  testler.filter((t) => !t.grup).forEach((t) => {
+    const d = sayi(`${t.id}-d`);
+    const y = sayi(`${t.id}-y`);
+    const fazla = d + y > t.soru;
+    document.getElementById(`${t.id}-d`).classList.toggle("hata", fazla);
+    document.getElementById(`${t.id}-y`).classList.toggle("hata", fazla);
+    const net = fazla ? 0 : d - y / 4;
+    document.getElementById(`${t.id}-net`).textContent = fazla ? "!" : iki(net);
+    sonuc[t.id] = net;
+    toplam += net;
+  });
+  return { sonuc, toplam };
+}
+
+function hamPuan(kod, n) {
+  const k = KATSAYI[kod];
+  let p = k.taban;
+  for (const id in k) {
+    if (id !== "taban") p += (n[id] || 0) * k[id];
+  }
+  return Math.min(p, 500);
+}
+
+// ÖSYM kuralı: puan türünün hesaplanması için ilgili testlerin en az birinden 0,5 net gerekir.
+function hesaplanirMi(kod, n) {
+  const tyt = n.tr >= 0.5 || n.mat >= 0.5;
+  if (kod === "TYT") return tyt;
+  if (!tyt) return false;
+  const fen = n.fiz + n.kim + n.bio;
+  const tdeSos1 = n.edb + n.tar1 + n.cog1;
+  const sos2 = n.tar2 + n.cog2 + n.fel + n.din;
+  if (kod === "SAY") return n.amat >= 0.5 || fen >= 0.5;
+  if (kod === "EA") return n.amat >= 0.5 || tdeSos1 >= 0.5;
+  if (kod === "SOZ") return tdeSos1 >= 0.5 || sos2 >= 0.5;
+  return false;
+}
+
+// Puanın düştüğü aralıkta iki komşu değer arasında (logaritmik) orantılama yapar.
+function siralama(puan, esikler, dagilim) {
+  if (puan >= esikler[0]) return dagilim[0];
+  const son = esikler.length - 1;
+  if (puan <= esikler[son]) return dagilim[son];
+  for (let i = 0; i < son; i++) {
+    const ust = esikler[i];
+    const alt = esikler[i + 1];
+    if (puan <= ust && puan >= alt) {
+      const oran = (ust - puan) / (ust - alt);
+      const lnUst = Math.log(dagilim[i]);
+      const lnAlt = Math.log(dagilim[i + 1]);
+      return Math.max(1, Math.round(Math.exp(lnUst + oran * (lnAlt - lnUst))));
+    }
+  }
+  return dagilim[son];
+}
+
+function sira(n) {
+  return n.toLocaleString("tr-TR");
+}
+
+function hesapla() {
+  const tyt = netler(TYT_TESTLER);
+  const ayt = netler(AYT_TESTLER);
+  document.getElementById("tyt-top").textContent = iki(tyt.toplam);
+  document.getElementById("ayt-top").textContent = iki(ayt.toplam);
+  const n = { ...tyt.sonuc, ...ayt.sonuc };
+
+  const diplomaInput = document.getElementById("diploma");
+  const diploma = parseFloat(diplomaInput.value);
+  const diplomaGecerli = !Number.isNaN(diploma) && diploma >= 50 && diploma <= 100;
+  diplomaInput.classList.toggle("hata", diplomaInput.value !== "" && !diplomaGecerli);
+  const obpKatsayi = document.getElementById("gecen-yil").checked ? 0.06 : 0.12;
+  const obp = diplomaGecerli ? diploma * 5 : null;
+  const obpKatki = obp === null ? 0 : obp * obpKatsayi;
+
+  document.getElementById("obp-yazi").textContent = diplomaGecerli
+    ? `OBP: ${iki(obp)} · Puana katkısı: +${iki(obpKatki)}`
+    : "Diploma notunu (50-100) girmezsen yerleştirme puanı hesaplanmaz.";
+
+  const kutu = document.getElementById("sonuclar");
+  kutu.innerHTML = "";
+  PUAN_TURLERI.forEach((tur) => {
+    const kart = document.createElement("div");
+    kart.className = "res-card";
+    const baslik = tur.kisa ? `${tur.ad} <small>(${tur.kisa})</small>` : tur.ad;
+
+    if (!hesaplanirMi(tur.kod, n)) {
+      const neden = tur.kod === "TYT"
+        ? "Türkçe ya da Temel Matematik'ten en az 0,5 net gerekir."
+        : "Bu puan türünün testlerinden ve TYT'den yeterli net yok.";
+      kart.innerHTML = `<h4>${baslik}</h4><p class="yok">${neden}</p>`;
+      kutu.appendChild(kart);
+      return;
+    }
+
+    const ham = hamPuan(tur.kod, n);
+    const hamSira = siralama(ham, HAM_ESIK, HAM_DAGILIM[tur.kod]);
+    let html = `
+      <h4>${baslik}</h4>
+      <div class="res-big">${iki(ham)}</div>
+      <div class="res-line"><span>Ham puan sıralaması</span><b>${sira(hamSira)}</b></div>`;
+
+    if (diplomaGecerli) {
+      const yer = ham + obpKatki;
+      const yerSira = siralama(yer, YER_ESIK, YER_DAGILIM[tur.kod]);
+      html += `
+        <div class="res-line"><span>Yerleştirme puanı</span><b>${iki(yer)}</b></div>
+        <div class="res-line"><span>Yerleştirme sıralaması</span><b>${sira(yerSira)}</b></div>`;
+    }
+    kart.innerHTML = html;
+    kutu.appendChild(kart);
+  });
+}
+
+document.getElementById("hesapla").addEventListener("input", hesapla);
+document.getElementById("gecen-yil").addEventListener("change", hesapla);
+document.getElementById("temizle").addEventListener("click", () => {
+  document.querySelectorAll("#hesapla input[type=number]").forEach((inp) => (inp.value = ""));
+  document.getElementById("gecen-yil").checked = false;
+  hesapla();
+});
+
+hesapla();
+
+// ---------- Deneme takibi ----------
+const DEPO_ANAHTAR = "yks-denemeler";
+const GRAFIK_TURLERI = [
+  { kod: "tytNet", ad: "TYT Net" },
+  { kod: "aytNet", ad: "AYT Net" },
+  { kod: "TYT", ad: "TYT Puan" },
+  { kod: "SAY", ad: "SAY" },
+  { kod: "EA", ad: "EA" },
+  { kod: "SOZ", ad: "SÖZ" },
+];
+let grafikTuru = "tytNet";
+
+function denemeleriOku() {
+  try {
+    const veri = JSON.parse(localStorage.getItem(DEPO_ANAHTAR));
+    return Array.isArray(veri) ? veri : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function denemeleriYaz(liste) {
+  try {
+    localStorage.setItem(DEPO_ANAHTAR, JSON.stringify(liste));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function kacis(metin) {
+  const div = document.createElement("div");
+  div.textContent = metin;
+  return div.innerHTML;
+}
+
+function denemeyiKaydet() {
+  const mesaj = document.getElementById("kaydet-mesaj");
+  const tyt = netler(TYT_TESTLER);
+  const ayt = netler(AYT_TESTLER);
+  if (tyt.toplam === 0 && ayt.toplam === 0) {
+    mesaj.textContent = "Önce netlerini gir.";
+    return;
+  }
+  const n = { ...tyt.sonuc, ...ayt.sonuc };
+  const puanlar = {};
+  PUAN_TURLERI.forEach((t) => {
+    if (hesaplanirMi(t.kod, n)) puanlar[t.kod] = Math.round(hamPuan(t.kod, n) * 100) / 100;
+  });
+  const adInput = document.getElementById("deneme-adi");
+  const liste = denemeleriOku();
+  liste.push({
+    tarih: new Date().toISOString(),
+    ad: adInput.value.trim() || `Deneme ${liste.length + 1}`,
+    tytNet: Math.round(tyt.toplam * 100) / 100,
+    aytNet: Math.round(ayt.toplam * 100) / 100,
+    puanlar,
+  });
+  if (denemeleriYaz(liste)) {
+    mesaj.textContent = "Kaydedildi ✓";
+    adInput.value = "";
+  } else {
+    mesaj.textContent = "Bu tarayıcı kaydetmeye izin vermiyor.";
+  }
+  setTimeout(() => (mesaj.textContent = ""), 2500);
+  denemeleriCiz();
+}
+
+function denemeDegeri(d, kod) {
+  if (kod === "tytNet" || kod === "aytNet") return d[kod];
+  return d.puanlar ? d.puanlar[kod] : undefined;
+}
+
+function grafikCiz(liste) {
+  const noktalar = liste
+    .map((d, i) => ({ i, d, v: denemeDegeri(d, grafikTuru) }))
+    .filter((p) => typeof p.v === "number");
+  if (noktalar.length === 0) return `<p class="muted">Bu tür için kayıtlı değer yok.</p>`;
+
+  const G = 600, Y = 300, sol = 56, sag = 30, ust = 40, alt = 40;
+  const degerler = noktalar.map((p) => p.v);
+  let min = Math.min(...degerler), max = Math.max(...degerler);
+  if (min === max) { min -= 5; max += 5; }
+  const pay = (max - min) * 0.1;
+  min -= pay; max += pay;
+  const x = (k) => noktalar.length === 1 ? (sol + G - sag) / 2 : sol + (k / (noktalar.length - 1)) * (G - sol - sag);
+  const y = (v) => ust + (1 - (v - min) / (max - min)) * (Y - ust - alt);
+
+  let svg = `<svg id="grafik" viewBox="0 0 ${G} ${Y}" role="img" aria-label="Deneme gelişim grafiği">`;
+  for (let k = 0; k <= 3; k++) {
+    const v = min + (k / 3) * (max - min);
+    svg += `<line class="eksen" x1="${sol}" x2="${G - sag}" y1="${y(v)}" y2="${y(v)}"/>`;
+    svg += `<text x="${sol - 6}" y="${y(v) + 4}" text-anchor="end">${Math.round(v)}</text>`;
+  }
+  svg += `<polyline class="cizgi" points="${noktalar.map((p, k) => `${x(k)},${y(p.v)}`).join(" ")}"/>`;
+  noktalar.forEach((p, k) => {
+    svg += `<circle class="nokta" cx="${x(k)}" cy="${y(p.v)}" r="7"><title>${kacis(p.d.ad)}: ${iki(p.v)}</title></circle>`;
+    svg += `<text x="${x(k)}" y="${Y - 8}" text-anchor="middle">${k + 1}</text>`;
+  });
+  const son = noktalar[noktalar.length - 1];
+  svg += `<text class="etiket" x="${x(noktalar.length - 1)}" y="${y(son.v) - 16}" text-anchor="middle">${iki(son.v)}</text>`;
+  return svg + `</svg>`;
+}
+
+function denemeleriCiz() {
+  const kutu = document.getElementById("deneme-icerik");
+  const liste = denemeleriOku();
+  if (liste.length === 0) {
+    kutu.innerHTML = `<div class="card"><p class="muted" style="margin:0">Henüz kayıtlı deneme yok. Yukarıda netlerini girip "Kaydet"e bas.</p></div>`;
+    return;
+  }
+
+  const sekmeler = GRAFIK_TURLERI.map((t) =>
+    `<button class="chip${t.kod === grafikTuru ? " active" : ""}" data-tur="${t.kod}">${t.ad}</button>`).join("");
+
+  const satirlar = liste.map((d, i) => `
+    <tr>
+      <td>${i + 1}. ${kacis(d.ad)}<small>${new Date(d.tarih).toLocaleDateString("tr-TR")}</small></td>
+      <td>${iki(d.tytNet)}</td>
+      <td>${iki(d.aytNet)}</td>
+      <td><button class="sil" data-sil="${i}" aria-label="Sil">×</button></td>
+    </tr>`).reverse().join("");
+
+  kutu.innerHTML = `
+    <div class="card chart-wrap">
+      <div class="chart-tabs">${sekmeler}</div>
+      ${grafikCiz(liste)}
+    </div>
+    <div class="card">
+      <table class="net-table deneme-table">
+        <thead><tr><th>Deneme</th><th>TYT Net</th><th>AYT Net</th><th></th></tr></thead>
+        <tbody>${satirlar}</tbody>
+      </table>
+    </div>`;
+}
+
+document.getElementById("kaydet").addEventListener("click", denemeyiKaydet);
+document.getElementById("deneme-icerik").addEventListener("click", (e) => {
+  const tur = e.target.dataset.tur;
+  const sil = e.target.dataset.sil;
+  if (tur) {
+    grafikTuru = tur;
+    denemeleriCiz();
+  } else if (sil !== undefined) {
+    const liste = denemeleriOku();
+    liste.splice(Number(sil), 1);
+    denemeleriYaz(liste);
+    denemeleriCiz();
+  }
+});
+
+denemeleriCiz();
+  </script>
+</body>
+</html>
