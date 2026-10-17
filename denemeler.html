@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Denemelerin · YKS Hazırlık</title>
+  <meta name="description" content="Kaydettiğin YKS denemelerinin net ve puan gelişimi.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>var TEMA_SINIF = {"ozel": "ozel sevgili", "turkan": "ozel arkadas tema-veteriner", "ceren": "ozel arkadas tema-tip"}; try { var t = JSON.parse(localStorage.getItem("yks-tema")); if (TEMA_SINIF[t]) document.documentElement.className += " " + TEMA_SINIF[t]; } catch (e) {}</script>
+  <style>
+:root {
+  --bg: #f4f5fa;
+  --surface: #ffffff;
+  --surface-2: #f0f1f8;
+  --text: #121624;
+  --muted: #646b80;
+  --primary: #2563eb;
+  --primary-2: #06b6d4;
+  --primary-soft: rgba(37, 99, 235, .09);
+  --hero-bg: radial-gradient(110% 130% at 100% 0%, rgba(34, 211, 238, .55) 0%, transparent 55%), linear-gradient(135deg, #0b1f4d 0%, #1d4ed8 60%, #0891b2 100%);
+  --hero-btn: #1d4ed8;
+  --border: #e4e6ef;
+  --iyi: #16a34a;
+  --orta: #d99a00;
+  --zayif: #e5484d;
+  --uyari-bg: #fff7e6;
+  --uyari-text: #7a5200;
+  --golge: 0 1px 2px rgba(18, 22, 36, .04), 0 6px 24px rgba(18, 22, 36, .06);
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0e16;
+    --surface: #151824;
+    --surface-2: #1c2030;
+    --text: #eef0f8;
+    --muted: #9aa1b7;
+    --primary: #60a5fa;
+    --primary-2: #22d3ee;
+    --primary-soft: rgba(96, 165, 250, .14);
+    --border: #262a3b;
+    --iyi: #34c46a;
+    --orta: #f1b52b;
+    --zayif: #ff6b6f;
+    --uyari-bg: #2a2313;
+    --uyari-text: #f3c86f;
+    --golge: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .25);
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); }
+.container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+/* ---------- Üst menü ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 12px; }
+.logo { display: flex; align-items: center; gap: 5px; font-weight: 800; font-size: 1.12rem; color: var(--text); text-decoration: none; letter-spacing: -.01em; }
+.logo span { color: var(--primary); }
+nav.ust-nav { display: flex; gap: 4px; }
+nav.ust-nav a {
+  color: var(--muted); text-decoration: none; font-weight: 600; font-size: .93rem;
+  padding: 8px 14px; border-radius: 999px; transition: background .15s, color .15s;
+}
+nav.ust-nav a:hover { color: var(--text); background: var(--surface-2); }
+nav.ust-nav a.aktif { color: var(--primary); background: var(--primary-soft); }
+
+/* Telefon alt menüsü */
+.alt-nav { display: none; }
+@media (max-width: 760px) {
+  nav.ust-nav { display: none; }
+  body { padding-bottom: 76px; }
+  .alt-nav {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  .alt-nav a {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    color: var(--muted); text-decoration: none; font-size: .7rem; font-weight: 600; padding: 4px 0;
+  }
+  .alt-nav svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .alt-nav a.aktif { color: var(--primary); }
+}
+
+/* ---------- Genel ---------- */
+.section { padding-top: 48px; padding-bottom: 8px; }
+.bolum-baslik { margin-bottom: 18px; }
+.bolum-baslik .ust-yazi { color: var(--primary); font-weight: 700; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
+.section h2 { font-size: clamp(1.45rem, 3.6vw, 1.9rem); letter-spacing: -.02em; line-height: 1.2; margin: 4px 0 6px; }
+.section h3 { font-size: 1.05rem; margin: 26px 0 10px; letter-spacing: -.01em; }
+.muted { color: var(--muted); margin-bottom: 18px; }
+.bolum-baslik .muted { margin-bottom: 0; max-width: 640px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--golge);
+}
+.card + .card { margin-top: 14px; }
+.tablo-kap { overflow-x: auto; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  background: var(--primary); color: #fff; border: 1px solid transparent;
+  padding: 11px 22px; border-radius: 999px; font: inherit; font-weight: 700; font-size: .95rem;
+  text-decoration: none; cursor: pointer; transition: transform .1s, filter .15s;
+}
+.btn:hover { filter: brightness(1.07); }
+.btn:active { transform: scale(.98); }
+.btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary); filter: none; }
+.btn:disabled { opacity: .45; cursor: default; filter: none; }
+.actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+.chart-tabs { display: inline-flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; padding: 4px; background: var(--surface-2); border-radius: 999px; }
+.chip {
+  background: transparent; border: none; color: var(--muted);
+  padding: 7px 16px; border-radius: 999px; font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer;
+}
+.chip:hover { color: var(--text); }
+.chip.active { background: var(--surface); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+input[type="number"], input[type="text"], input[type="search"], select {
+  font: inherit; color: var(--text); background: var(--surface-2);
+  border: 1px solid transparent; border-radius: var(--radius-sm); padding: 9px 12px; font-size: 1rem;
+  transition: border-color .15s, background .15s;
+}
+input:focus, select:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+input.hata { border-color: var(--zayif); }
+
+.note {
+  background: var(--uyari-bg); color: var(--uyari-text);
+  border-radius: var(--radius-sm); padding: 12px 16px; font-size: .88rem; margin-top: 16px;
+}
+.sources, .puan-kaynak { font-size: .84rem; color: var(--muted); margin-top: 8px; }
+
+/* ---------- Ana sayfa üst alanı ---------- */
+.hero { padding: 28px 0 0; }
+.hero-kart {
+  position: relative; overflow: hidden;
+  border-radius: 28px; padding: clamp(26px, 5vw, 48px);
+  background: var(--hero-bg);
+  color: #fff;
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center;
+}
+.hero-kart h1 { font-size: clamp(1.8rem, 4.6vw, 2.8rem); line-height: 1.12; letter-spacing: -.03em; margin-bottom: 12px; }
+.hero-kart p { opacity: .88; margin-bottom: 22px; max-width: 460px; }
+.hero-kart .btn { background: #fff; color: var(--hero-btn); }
+.hero-kart .btn-ghost { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.3); }
+.hero-kart .btn-ghost:hover { color: #fff; border-color: #fff; }
+.geri-sayim-kutu { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); border-radius: 22px; padding: 18px; }
+.geri-sayim-kutu small.ust { display: block; opacity: .85; font-size: .82rem; font-weight: 600; margin-bottom: 10px; }
+.countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.cd-box { text-align: center; background: rgba(255,255,255,.14); border-radius: 14px; padding: 12px 4px; }
+.cd-box span { display: block; font-size: clamp(1.5rem, 4.5vw, 2.2rem); font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.cd-box small { opacity: .8; font-size: .75rem; font-weight: 600; }
+.hizli { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+.hizli a {
+  display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--golge);
+  transition: transform .15s, border-color .15s;
+}
+.hizli a:hover { transform: translateY(-2px); border-color: var(--primary); }
+.hizli b { font-size: .98rem; }
+.hizli small { color: var(--muted); font-size: .8rem; line-height: 1.35; }
+.hizli .ikon { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); margin-bottom: 6px; }
+.hizli .ikon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Net tablosu ---------- */
+.iki-kolon { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+.iki-kolon .card + .card { margin-top: 0; }
+.kart-baslik { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.kart-baslik h3 { margin: 0; }
+.kart-baslik b { color: var(--primary); font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.net-table { width: 100%; border-collapse: collapse; }
+.net-table th, .net-table td { padding: 7px 6px; text-align: left; }
+.net-table th { color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; }
+.net-table tbody tr + tr td { border-top: 1px solid var(--border); }
+.net-table td small { color: var(--muted); display: block; font-size: .76rem; }
+.net-table .grup td { font-size: .74rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; padding-top: 14px; }
+.net-table input[type="number"] { width: 62px; padding: 7px 8px; text-align: center; }
+.net-table .net { font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; text-align: right; }
+.net-table th:last-child { text-align: right; }
+.net-table tfoot { display: none; }
+
+.obp-row { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.obp-row label { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.obp-row input[type="number"] { width: 100px; }
+.obp-row .muted { margin: 0; font-size: .88rem; }
+
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; }
+.res-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--golge); }
+.res-card h4 { font-size: .9rem; margin-bottom: 4px; color: var(--muted); font-weight: 700; }
+.res-card h4 small { font-weight: 600; }
+.res-line { display: flex; justify-content: space-between; gap: 8px; font-size: .88rem; padding: 4px 0; border-top: 1px solid var(--border); }
+.res-line span:first-child { color: var(--muted); }
+.res-line b { font-variant-numeric: tabular-nums; }
+.res-big { font-size: 1.9rem; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1.15; margin-bottom: 8px; letter-spacing: -.02em; }
+.res-card .yok { color: var(--muted); font-size: .86rem; }
+
+.kaydet-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.kaydet-row input[type="text"] { flex: 1; min-width: 180px; border-radius: 999px; padding: 11px 16px; }
+.kaydet-mesaj { color: var(--primary); font-size: .9rem; font-weight: 600; }
+
+/* ---------- Bilgi açılırları ---------- */
+details.bilgi { margin-top: 14px; font-size: .86rem; color: var(--muted); }
+details.bilgi summary { cursor: pointer; font-weight: 600; list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+details.bilgi summary::before { content: "ⓘ"; color: var(--primary); }
+details.bilgi summary::-webkit-details-marker { display: none; }
+details.bilgi p { margin-top: 8px; }
+
+/* ---------- Tercih ---------- */
+.tercih-kontrol { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 4px; }
+.filtreler { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: end; }
+.filtreler label { display: flex; flex-direction: column; gap: 6px; font-size: .8rem; color: var(--muted); font-weight: 700; }
+.filtreler input, .filtreler select { width: 100%; }
+.prog-liste { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.prog {
+  display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; text-decoration: none; color: var(--text); box-shadow: var(--golge);
+  transition: border-color .15s, transform .15s;
+}
+.prog:hover { border-color: var(--primary); transform: translateY(-1px); }
+.prog-ad { font-weight: 700; line-height: 1.3; }
+.prog-uni { font-size: .9rem; color: var(--muted); margin-top: 2px; }
+.etiketler { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.etiket { font-size: .74rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+.etiket.vurgu { background: var(--primary-soft); color: var(--primary); }
+.etiket.ucret { background: color-mix(in srgb, var(--orta) 16%, transparent); color: color-mix(in srgb, var(--orta) 70%, var(--text)); }
+.etiket.iyi { background: color-mix(in srgb, var(--iyi) 14%, transparent); color: var(--iyi); }
+.prog-sag { text-align: right; display: flex; align-items: center; gap: 14px; }
+.prog-puan { font-weight: 800; font-size: 1.2rem; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.prog-detay { font-size: .78rem; color: var(--muted); }
+.prog-ok { color: var(--muted); font-size: 1.2rem; }
+.liste-baslik { display: flex; justify-content: space-between; align-items: baseline; margin-top: 28px; gap: 10px; }
+.liste-baslik h3 { margin: 0; }
+.liste-baslik span { color: var(--muted); font-size: .86rem; white-space: nowrap; }
+.daha-fazla { margin-top: 12px; width: 100%; }
+
+/* ---------- Memnuniyet dairesi ---------- */
+.halka { display: block; flex-shrink: 0; }
+.halka .zemin { fill: var(--surface-2); }
+.halka .dolu { fill: var(--halka-renk); opacity: .9; }
+.halka .cerceve { fill: none; stroke: var(--halka-renk); stroke-width: 6; }
+.halka text { font-family: inherit; font-weight: 800; fill: var(--text); }
+.halka text.ici-dolu { fill: #fff; }
+.halka.iyi { --halka-renk: var(--iyi); }
+.halka.orta { --halka-renk: var(--orta); }
+.halka.zayif { --halka-renk: var(--zayif); }
+
+/* ---------- Şehir ve yaşam kutuları ---------- */
+.yasam { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.yasam-kutu { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--golge); display: flex; flex-direction: column; gap: 4px; }
+.yasam-kutu .ad { font-size: .8rem; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.yasam-kutu .deger { font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
+.yasam-kutu .alt { font-size: .8rem; color: var(--muted); }
+.yasam-kutu.memnun { grid-column: span 2; grid-row: span 2; align-items: center; justify-content: center; text-align: center; gap: 10px; padding: 22px; }
+.yasam-kutu.memnun .ad { justify-content: center; }
+.yasam-kutu.memnun .deger { font-size: 1.2rem; }
+.yasam-kutu.memnun .alt { max-width: 340px; }
+.yasam-kutu a.kucuk-link { font-size: .82rem; font-weight: 700; text-decoration: none; margin-top: auto; padding-top: 6px; }
+.veri-yok { color: var(--muted); font-weight: 600; font-size: 1rem; }
+
+.site-footer { color: var(--muted); padding: 40px 0 32px; margin-top: 48px; border-top: 1px solid var(--border); font-size: .88rem; }
+.site-footer .container { display: flex; flex-direction: column; gap: 10px; }
+.site-footer details summary { cursor: pointer; font-weight: 600; }
+.site-footer details div { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+
+@media (max-width: 860px) {
+  .hero-kart { grid-template-columns: 1fr; }
+  .hizli { grid-template-columns: repeat(2, 1fr); }
+  .iki-kolon { grid-template-columns: 1fr; }
+  .yasam { grid-template-columns: repeat(2, 1fr); }
+  .filtreler { grid-template-columns: 1fr 1fr; }
+  .filtreler label:first-child { grid-column: span 2; }
+}
+@media (max-width: 520px) {
+  .section { padding-top: 36px; }
+  .chart-tabs { display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .chip { flex: 1 0 auto; padding: 7px 10px; font-size: .82rem; }
+  .card { padding: 14px; }
+  .hero { padding-top: 14px; }
+  .hero-kart { border-radius: 22px; }
+  .filtreler { grid-template-columns: 1fr; }
+  .filtreler label:first-child { grid-column: auto; }
+  .prog { grid-template-columns: 1fr; }
+  .prog-sag { justify-content: space-between; text-align: left; border-top: 1px solid var(--border); padding-top: 8px; }
+  .prog-ok { display: none; }
+  .yasam-kutu.memnun { grid-column: span 2; grid-row: auto; }
+  .net-table input[type="number"] { width: 54px; }
+  .net-table th, .net-table td { padding: 7px 3px; }
+  .countdown { gap: 6px; }
+}
+
+/* ---------- Hesap butonu ve modal ---------- */
+.ust-sag { display: flex; align-items: center; gap: 8px; }
+.hesap-btn {
+  font: inherit; font-weight: 700; font-size: .9rem; cursor: pointer; white-space: nowrap;
+  background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 8px 16px;
+}
+.hesap-btn:hover { filter: brightness(1.07); }
+body.modal-acik { overflow: hidden; }
+.modal { position: fixed; inset: 0; z-index: 50; background: rgba(8, 12, 28, .55); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; }
+.modal[hidden] { display: none; }
+.modal-kutu { position: relative; width: 100%; max-width: 400px; background: var(--surface); border-radius: 22px; padding: 26px 22px 22px; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.modal-kutu h3 { font-size: 1.2rem; margin-bottom: 4px; }
+.modal-kutu form { display: flex; flex-direction: column; gap: 12px; }
+.modal-kutu form[hidden], .modal-kutu [data-gorunum][hidden], .modal-sekme[hidden] { display: none; }
+.modal-kutu label { display: flex; flex-direction: column; gap: 5px; font-size: .82rem; font-weight: 700; color: var(--muted); }
+.modal-kutu input { width: 100%; font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid transparent; border-radius: 12px; padding: 11px 12px; font-size: 1rem; }
+.modal-kutu input:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+.modal-kutu .btn { width: 100%; margin-top: 4px; }
+.modal-kapat { position: absolute; top: 10px; right: 12px; border: none; background: none; font-size: 1.6rem; color: var(--muted); cursor: pointer; line-height: 1; }
+.modal-sekme { margin-bottom: 16px; }
+.link-btn { background: none; border: none; color: var(--primary); font: inherit; font-weight: 700; font-size: .88rem; cursor: pointer; align-self: center; }
+.form-mesaj { font-size: .86rem; color: var(--zayif); min-height: 1em; text-align: center; }
+.form-mesaj.iyi { color: var(--iyi); }
+.form-mesaj:empty { display: none; }
+.profil-ust { display: flex; gap: 12px; align-items: center; }
+.profil-ust .avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--primary-soft); display: grid; place-items: center; font-size: 1.4rem; }
+.profil-ust small { display: block; color: var(--muted); }
+.profil-ust b { font-size: 1.1rem; }
+.yerel-not { font-size: .76rem; color: var(--muted); text-align: center; margin-top: 12px; }
+.kalp-btn {
+  position: absolute; right: 16px; bottom: 10px; padding: 4px 6px; border: none; background: none;
+  color: var(--muted); font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; opacity: .75; transition: opacity .15s, color .15s;
+}
+.kalp-btn:hover { opacity: 1; color: var(--primary); }
+.modal-kutu { padding-bottom: 40px; }
+
+/* ---------- Özel tema ---------- */
+html:not(.ozel) .ozel-yazi { display: none !important; }
+html.ozel .normal-yazi { display: none !important; }
+html:not(.sevgili) .sevgili-yazi, html:not(.arkadas) .arkadas-yazi { display: none !important; }
+html.ozel {
+  --bg: #fff4f8;
+  --surface: #ffffff;
+  --surface-2: #fdeaf1;
+  --text: #1f2d5c;
+  --muted: #6a6f92;
+  --primary: #e2457f;
+  --primary-2: #ff8fb8;
+  --primary-soft: rgba(226, 69, 127, .1);
+  --yesil: #2f9e6e;
+  --lacivert: #1f2d5c;
+  --border: #f5d5e2;
+  --hero-bg: radial-gradient(90% 120% at 100% 0%, rgba(47,158,110,.55) 0%, transparent 50%), linear-gradient(135deg, #1f2d5c 0%, #9b2f6a 55%, #e2457f 100%);
+  --hero-btn: #c2306a;
+  --sus: "♥";
+  --golge: 0 1px 2px rgba(226, 69, 127, .06), 0 8px 26px rgba(31, 45, 92, .07);
+}
+@media (prefers-color-scheme: dark) {
+  html.ozel {
+    --bg: #160d1a;
+    --surface: #221425;
+    --surface-2: #2d1a30;
+    --text: #fbe9f1;
+    --muted: #c7a9bc;
+    --primary: #ff6fa5;
+    --primary-2: #ffa6c8;
+    --primary-soft: rgba(255, 111, 165, .14);
+    --border: #3d2440;
+  }
+}
+html.ozel .bolum-baslik .ust-yazi { color: var(--yesil); }
+html.ozel .bolum-baslik .ust-yazi::before { content: var(--sus) " "; color: var(--primary); }
+html.ozel .logo span { color: var(--primary); }
+html.ozel .logo::after { content: var(--sus); color: var(--primary); margin-left: 2px; font-size: .9em; }
+html.ozel .hizli .ikon { background: rgba(47,158,110,.12); color: var(--yesil); }
+html.ozel .site-footer { border-top-color: var(--primary-soft); }
+html.ozel .hero-kart::before, html.ozel .hero-kart::after {
+  content: var(--sus); position: absolute; color: rgba(255,255,255,.12); pointer-events: none; line-height: 1;
+}
+html.ozel .hero-kart::before { font-size: 180px; right: -20px; bottom: -40px; transform: rotate(-12deg); }
+html.ozel .hero-kart::after { font-size: 64px; right: 22px; top: 6px; color: rgba(127, 230, 180, .25); transform: rotate(14deg); }
+html.ozel .geri-sayim-kutu { border-color: rgba(127, 230, 180, .45); }
+.motivasyon { margin-top: 12px; font-size: .92rem; font-weight: 600; min-height: 2.8em; transition: opacity .4s; }
+.motivasyon.gizle { opacity: 0; }
+.kalpler { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; display: none; }
+html.ozel .kalpler { display: block; }
+.kalpler span::before { content: var(--sus); }
+.kalpler span { position: absolute; bottom: -40px; color: var(--primary); opacity: .14; animation: kalp-uc linear infinite; }
+.kalpler span:nth-child(3n) { color: var(--yesil); }
+.kalpler span:nth-child(4n) { color: var(--lacivert); }
+@keyframes kalp-uc { to { transform: translateY(-115vh) rotate(25deg); } }
+@media (prefers-reduced-motion: reduce) { .kalpler span { animation: none; display: none; } }
+main, .site-footer { position: relative; z-index: 1; }
+@media (max-width: 760px) {
+  .hesap-btn { padding: 7px 14px; font-size: .85rem; }
+}
+
+.sevgi-serit { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 14px 0 0; padding: 10px 16px; border-radius: 14px; background: var(--primary-soft); border: 1px solid var(--border); font-size: .92rem; }
+.sevgi-selam { font-weight: 800; color: var(--primary); white-space: nowrap; }
+.sevgi-sozu { color: var(--text); font-weight: 500; transition: opacity .4s; }
+.sevgi-sozu.gizle { opacity: 0; }
+.profil-sevgi { margin: 12px 0 0; padding: 10px 14px; border-radius: 12px; background: var(--primary-soft); color: var(--primary); font-weight: 700; }
+.virgul:not(:empty)::before { content: ","; }
+
+/* ---------- Arkadaş temaları (html.ozel.arkadas.tema-*) ---------- */
+html.ozel.tema-galaksi {
+  --bg: #f4f2ff; --surface: #ffffff; --surface-2: #ebe7fb; --text: #1d1b3a; --muted: #67648c;
+  --primary: #6d4ce0; --primary-2: #a58bff; --primary-soft: rgba(109, 76, 224, .1);
+  --yesil: #2bb3c0; --lacivert: #1d1b3a; --border: #ddd6f7;
+  --hero-bg: radial-gradient(80% 110% at 100% 0%, rgba(43,179,192,.45) 0%, transparent 55%), linear-gradient(135deg, #0f1033 0%, #2e1f6b 55%, #6d4ce0 100%);
+  --hero-btn: #5236c4; --sus: "★";
+  --golge: 0 1px 2px rgba(109, 76, 224, .06), 0 8px 26px rgba(29, 27, 58, .08);
+}
+@media (prefers-color-scheme: dark) {
+  html.ozel.tema-galaksi {
+    --bg: #0c0b1d; --surface: #16142e; --surface-2: #1f1c3d; --text: #ecebff; --muted: #a9a6d0;
+    --primary: #a58bff; --primary-2: #c9b8ff; --primary-soft: rgba(165, 139, 255, .14); --border: #2c2852;
+  }
+}
+
+html.ozel.tema-veteriner {
+  --bg: #f2faf7; --surface: #ffffff; --surface-2: #e4f4ee; --text: #17323a; --muted: #5d7a7f;
+  --primary: #0f9d84; --primary-2: #5fd3b8; --primary-soft: rgba(15, 157, 132, .1);
+  --yesil: #f08a24; --lacivert: #17323a; --border: #cfe9e0;
+  --hero-bg: radial-gradient(85% 120% at 100% 0%, rgba(240,138,36,.5) 0%, transparent 52%), linear-gradient(135deg, #12343b 0%, #0f6f60 55%, #13a88b 100%);
+  --hero-btn: #0b7f6b; --sus: "🐾";
+  --golge: 0 1px 2px rgba(15, 157, 132, .06), 0 8px 26px rgba(23, 50, 58, .08);
+}
+@media (prefers-color-scheme: dark) {
+  html.ozel.tema-veteriner {
+    --bg: #0b1715; --surface: #13221f; --surface-2: #1a2e2a; --text: #e6f6f1; --muted: #9dbdb5;
+    --primary: #3cc9a9; --primary-2: #7fe3cb; --primary-soft: rgba(60, 201, 169, .14); --border: #24413b;
+  }
+}
+html.tema-veteriner .kalpler span { opacity: .2; }
+html.tema-veteriner .kalpler span:nth-child(3n)::before { content: "🐱"; }
+html.tema-veteriner .kalpler span:nth-child(4n)::before { content: "🐶"; }
+html.tema-veteriner .hero-kart::before { opacity: .16; }
+html.tema-veteriner .hero-kart::after { content: "🐱"; opacity: .3; }
+html.tema-veteriner .bolum-baslik .ust-yazi::before { content: "🐾 "; }
+html.tema-veteriner .logo::after { content: " 🐾"; }
+.vet-kart { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; margin-top: 18px; }
+.vet-kart .vet-ikon { font-size: 2.4rem; line-height: 1; }
+.vet-kart .vet-metin { flex: 1 1 240px; }
+.vet-kart h3 { margin: 0 0 4px; }
+.vet-kart p { margin: 0; }
+.vet-sayilar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+/* Kıbbık: gizli bölge ekranı */
+.modal-kutu.gizli-mod {
+  background: #070b0a; color: #8dffc1; border: 1px solid rgba(80, 255, 160, .35);
+  box-shadow: 0 0 0 1px rgba(80,255,160,.08), 0 0 40px rgba(40, 255, 140, .18), 0 20px 60px rgba(0,0,0,.6);
+  background-image: repeating-linear-gradient(0deg, rgba(80,255,160,.04) 0 1px, transparent 1px 3px);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+.gizli-mod .modal-kapat, .gizli-mod .kalp-btn { color: #4fd18f; }
+.gizli-mod .yerel-not { display: none; }
+.gizli-bolge h3 { color: #d8ffe9; font-size: 1rem; letter-spacing: .02em; line-height: 1.4; }
+.gizli-ust { display: flex; align-items: center; gap: 8px; font-size: .72rem; letter-spacing: .18em; color: #ff5d5d; font-weight: 700; }
+.gizli-isik { width: 8px; height: 8px; border-radius: 50%; background: #ff3b3b; box-shadow: 0 0 10px #ff3b3b; animation: gizli-yanson 1.1s steps(2) infinite; }
+@keyframes gizli-yanson { 50% { opacity: .15; } }
+.gizli-satir { margin: 0; font-size: .8rem; color: #5fcf95; }
+.gizli-satir::after { content: "_"; animation: gizli-yanson 1s steps(2) infinite; }
+.gizli-bolge label { color: #5fcf95 !important; letter-spacing: .14em; font-size: .72rem !important; }
+.gizli-bolge input { background: #0d1513 !important; color: #b6ffd8 !important; border: 1px solid rgba(80,255,160,.3) !important; letter-spacing: .3em; font-family: inherit !important; }
+.gizli-bolge input:focus { border-color: #50ffa0 !important; box-shadow: 0 0 0 3px rgba(80,255,160,.15); }
+.gizli-bolge .btn { background: #12c873; color: #04130b; font-family: inherit; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 0 18px rgba(18,200,115,.35); }
+.gizli-bolge .link-btn { color: #4fd18f; font-family: inherit; font-size: .8rem; }
+.gizli-bolge .form-mesaj { color: #ff6b6b; text-align: left; font-size: .82rem; }
+.gizli-bolge .form-mesaj.iyi { color: #50ffa0; }
+#ozel-form-ic { display: flex; flex-direction: column; gap: 12px; }
+#ozel-form-ic[hidden] { display: none; }
+.modal-kutu.titre { animation: titre .4s; }
+@keyframes titre { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+@media (prefers-reduced-motion: reduce) { .modal-kutu.titre, .gizli-isik, .gizli-satir::after { animation: none; } }
+.turkan-not { font-weight: 800; font-size: 1.05rem; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25); border-radius: 14px; padding: 10px 14px; }
+
+html.ozel.tema-tip {
+  --bg: #fbf3f3; --surface: #ffffff; --surface-2: #f6e6e7; --text: #2a1418; --muted: #7b5a60;
+  --primary: #b3243a; --primary-2: #e5677a; --primary-soft: rgba(179, 36, 58, .09);
+  --yesil: #1f6fd1; --lacivert: #2a1418; --border: #efd6d9;
+  --hero-bg: radial-gradient(80% 110% at 100% 0%, rgba(255,255,255,.22) 0%, transparent 50%), linear-gradient(135deg, #3a0d17 0%, #7d1a2b 50%, #c42f47 100%);
+  --hero-btn: #9c1f33; --sus: "✚";
+  --golge: 0 1px 2px rgba(179, 36, 58, .06), 0 8px 26px rgba(42, 20, 24, .08);
+}
+@media (prefers-color-scheme: dark) {
+  html.ozel.tema-tip {
+    --bg: #160b0d; --surface: #221215; --surface-2: #2d181c; --text: #fbecee; --muted: #c9a3a9;
+    --primary: #f0697f; --primary-2: #f7a3b0; --primary-soft: rgba(240, 105, 127, .14); --border: #3d2227;
+  }
+}
+html.tema-tip .kalpler span { opacity: .2; }
+html.tema-tip .kalpler span:nth-child(3n)::before { content: "🩺"; }
+html.tema-tip .kalpler span:nth-child(4n)::before { content: "❤️"; }
+html.tema-tip .kalpler span:nth-child(5n)::before { content: "💊"; }
+html.tema-tip .hero-kart::before { color: rgba(255,255,255,.1); }
+html.tema-tip .hero-kart::after { content: "🩺"; opacity: .35; }
+html.tema-tip .logo::after { content: " ✚"; color: var(--primary); }
+#hedef-kart[hidden] { display: none; }
+
+.chart-wrap { margin-bottom: 14px; }
+#grafik { width: 100%; height: auto; display: block; }
+#grafik text { fill: var(--muted); font-size: 20px; font-family: inherit; }
+#grafik .eksen { stroke: var(--border); }
+#grafik .cizgi { stroke: var(--primary); stroke-width: 4; fill: none; stroke-linejoin: round; }
+#grafik .nokta { fill: var(--primary); }
+#grafik .etiket { fill: var(--text); font-weight: 700; }
+.deneme-table td:last-child { text-align: right; }
+.sil { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; padding: 2px 8px; border-radius: 8px; }
+.sil:hover { color: var(--zayif); background: var(--surface-2); }
+.net-table td { border-top: 1px solid var(--border); }
+
+  </style>
+</head>
+<body>
+  <div class="kalpler" aria-hidden="true"><span style="left:41%;font-size:18px;animation-duration:26s;animation-delay:-20s"></span><span style="left:6%;font-size:16px;animation-duration:17s;animation-delay:-11s"></span><span style="left:74%;font-size:15px;animation-duration:30s;animation-delay:-6s"></span><span style="left:4%;font-size:16px;animation-duration:27s;animation-delay:-13s"></span><span style="left:8%;font-size:21px;animation-duration:16s;animation-delay:-17s"></span><span style="left:54%;font-size:15px;animation-duration:17s;animation-delay:-30s"></span><span style="left:28%;font-size:34px;animation-duration:15s;animation-delay:-18s"></span><span style="left:74%;font-size:26px;animation-duration:15s;animation-delay:-7s"></span><span style="left:5%;font-size:31px;animation-duration:18s;animation-delay:-9s"></span><span style="left:53%;font-size:18px;animation-duration:17s;animation-delay:-18s"></span><span style="left:39%;font-size:31px;animation-duration:19s;animation-delay:-3s"></span><span style="left:74%;font-size:32px;animation-duration:20s;animation-delay:-11s"></span><span style="left:12%;font-size:31px;animation-duration:16s;animation-delay:-18s"></span><span style="left:7%;font-size:33px;animation-duration:20s;animation-delay:-15s"></span></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">YKS<span>Hazırlık</span></a>
+      <div class="ust-sag">
+        <nav class="ust-nav">
+        <a href="index.html#hesapla">Hesapla</a>
+        <a href="index.html#tercih">Tercih</a>
+        <a href="uni.html">Üniversiteler</a>
+        <a href="program.html">Program</a>
+        <a href="denemeler.html" class="aktif">Denemeler</a>
+        </nav>
+        <button class="hesap-btn" id="hesap-btn">Giriş yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container ozel-yazi"><p class="sevgi-serit"><span class="sevgi-selam">Merhaba<span class="sevgili-ad"></span> <span class="tema-emoji">💗</span></span><span id="sevgi-sozu" class="sevgi-sozu"></span></p></div>
+    <section class="container section">
+      <div class="bolum-baslik">
+        <div class="ust-yazi">Takip</div>
+        <h2>Denemelerin</h2>
+        <p class="muted">Kaydettiğin denemeler sadece bu cihazın tarayıcısında saklanır.</p>
+      </div>
+      <div id="deneme-icerik"></div>
+      <div class="actions"><a class="btn" href="index.html#hesapla">Yeni deneme ekle</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><b>YKS Hazırlık</b> · Ücretsiz YKS rehberi. Başarılar! 🎯</p>
+      <details>
+        <summary>Veriler nereden geliyor?</summary>
+        <div>
+          <span>Taban puanlar ve puan dağılımı: ÖSYM 2026-YKS Sayısal Bilgiler. Katsayılar: Ertan Sinan Şahin 2026 tahmini.</span>
+          <span>Öğrenci memnuniyeti: ÜniAR Öğrenci Dostu Üniversite Şehirleri araştırması (2026, yoksa 2023).</span>
+          <span>KYK ücreti: 2026-2027 haberleri. Özel yurt: Yurtlarfiyatlar.com, Ağustos 2026. Kira: Emlakjet ve Endeksa, Ağustos 2026.</span>
+          <span>Topluluklar: üniversitelerin resmi sayfaları ve haberler.</span>
+        </div>
+      </details>
+    </div>
+  </footer>
+
+  <nav class="alt-nav">
+    <a href="index.html#hesapla"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 11h8M8 16h4"/></svg>Hesapla</a>
+    <a href="index.html#tercih"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Tercih</a>
+    <a href="uni.html"><svg viewBox="0 0 24 24"><path d="M3 10 12 5l9 5-9 5-9-5Z"/><path d="M7 12v5c3 2 7 2 10 0v-5"/></svg>Üniler</a>
+    <a href="program.html"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Program</a>
+    <a href="denemeler.html" class="aktif"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-4 3 3 5-6"/></svg>Denemeler</a>
+  </nav>
+  <div class="modal" id="hesap-modal" hidden>
+    <div class="modal-kutu" role="dialog" aria-modal="true" aria-label="Hesap">
+      <button class="modal-kapat" aria-label="Kapat">×</button>
+      <div class="modal-sekme chart-tabs">
+        <button class="chip active" data-ac="giris">Giriş yap</button>
+        <button class="chip" data-ac="kayit">Kayıt ol</button>
+      </div>
+
+      <form id="giris-form" data-gorunum="giris">
+        <h3>Tekrar hoş geldin</h3>
+        <label>E-posta<input type="email" id="giris-eposta" autocomplete="email" required></label>
+        <label>Şifre<input type="password" id="giris-sifre" autocomplete="current-password" required></label>
+        <button class="btn" type="submit">Giriş yap</button>
+        <button class="link-btn" type="button" id="sifre-unuttum">Şifremi unuttum</button>
+        <p class="form-mesaj" id="giris-mesaj"></p>
+      </form>
+
+      <form id="kayit-form" data-gorunum="kayit" hidden>
+        <h3>Ücretsiz hesap aç</h3>
+        <label>Adın<input type="text" id="kayit-ad" autocomplete="name" maxlength="40" required></label>
+        <label>E-posta<input type="email" id="kayit-eposta" autocomplete="email" required></label>
+        <label>Şifre<input type="password" id="kayit-sifre" autocomplete="new-password" minlength="6" required></label>
+        <button class="btn" type="submit">Kayıt ol</button>
+        <p class="form-mesaj" id="kayit-mesaj"></p>
+      </form>
+
+      <div data-gorunum="profil" hidden>
+        <div class="profil-ust"><span class="avatar">👤</span><div><b id="profil-ad"></b><small id="profil-eposta"></small></div></div>
+        <p class="profil-sevgi" id="profil-sevgi" hidden>Bu hesap sana özel 💗 Seni çok seviyorum.</p>
+        <p class="muted" id="profil-not" style="margin:14px 0"></p>
+        <div class="actions">
+          <a class="btn btn-ghost" href="denemeler.html">Denemelerim</a>
+          <a class="btn btn-ghost" href="program.html">Programım</a>
+          <button class="btn btn-ghost" id="tema-degistir" hidden></button>
+          <button class="btn" id="cikis-btn">Çıkış yap</button>
+        </div>
+      </div>
+
+      <form id="ozel-form" class="gizli-bolge" data-gorunum="ozel" hidden>
+        <div class="gizli-ust"><span class="gizli-isik"></span>GİZLİ BÖLGE · SEVİYE 5</div>
+        <h3>🔒 Yetkili personel dışında giriş yasaktır</h3>
+        <div id="ozel-form-ic">
+          <p class="gizli-satir">&gt; Bu terminale yapılan her deneme kayıt altına alınır.</p>
+          <label>ERİŞİM KODU<input type="password" id="ozel-sifre" autocomplete="off" spellcheck="false"></label>
+          <button class="btn" type="submit">Doğrula</button>
+          <button class="link-btn" type="button" id="ozel-kapat" hidden>Erişimi kapat, normal temaya dön</button>
+        </div>
+        <p class="form-mesaj" id="ozel-mesaj"></p>
+        <p class="form-mesaj iyi" id="ozel-durum"></p>
+        <button class="link-btn" type="button" data-ac="giris">‹ Bölgeden çık</button>
+      </form>
+
+      <p class="yerel-not" id="yerel-not" hidden>Hesaplar şimdilik sadece bu cihazda saklanıyor.</p>
+      <button class="kalp-btn" type="button" data-ac="ozel">kıbbık</button>
+    </div>
+  </div>
+
+  <script>
+// ---------- Hesap (giriş / kayıt) ve özel tema ----------
+// Firebase ayarlarını buraya yapıştırınca hesaplar tüm cihazlarda çalışır ve veriler buluta kaydedilir.
+// Boş kalırsa hesaplar sadece bu cihazda tutulur.
+const FIREBASE_AYAR = {
+  apiKey: "AIzaSyC88Xwcwy1UeuObH5k8lx2quX5vN2P-XU8",
+  authDomain: "yks-hazirlik-1dc8b.firebaseapp.com",
+  projectId: "yks-hazirlik-1dc8b",
+  storageBucket: "yks-hazirlik-1dc8b.firebasestorage.app",
+  messagingSenderId: "276814890274",
+  appId: "1:276814890274:web:503ecd61e683d12571117b",
+};
+
+const VERI_ANAHTARLARI = ["yks-denemeler", "yks-seviye-v2", "yks-program-ayar"];
+
+function depoOku(anahtar, varsayilan) {
+  try {
+    const v = JSON.parse(localStorage.getItem(anahtar));
+    return v === null ? varsayilan : v;
+  } catch (e) {
+    return varsayilan;
+  }
+}
+function depoYaz(anahtar, deger) {
+  try {
+    localStorage.setItem(anahtar, JSON.stringify(deger));
+  } catch (e) { /* tarayıcı izin vermiyor */ }
+}
+
+async function ozet(metin) {
+  const veri = new TextEncoder().encode(metin);
+  const h = await crypto.subtle.digest("SHA-256", veri);
+  return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+// ---------- Özel temalar ----------
+// TEMA_SINIF sayfanın başındaki küçük betikte tanımlı: tema kodu -> <html>'e eklenecek sınıflar.
+let temaKodu = TEMA_SINIF[depoOku("yks-tema", "normal")] ? depoOku("yks-tema", "normal") : "normal";
+function ozelTemaAcikMi() {
+  return temaKodu !== "normal";
+}
+function temaBilgi() {
+  return TEMALAR[temaKodu] || {};
+}
+// Tema bir hesaba bağlıdır: gizli kelimeyle açan hesap giriş yaptığı her cihazda bu temayı görür.
+function ozelTemaUygula(kod, hesabaKaydet) {
+  if (!TEMA_SINIF[kod]) kod = "normal";
+  const kok = document.documentElement.classList;
+  Object.values(TEMA_SINIF).join(" ").split(" ").forEach((s) => kok.remove(s));
+  if (kod !== "normal") kok.add(...TEMA_SINIF[kod].split(" "));
+  temaKodu = kod;
+  depoYaz("yks-tema", kod);
+  if (hesabaKaydet) temayiHesabaYaz(kod);
+  hesapBtnGuncelle();
+  sevgiAdiYaz();
+  sevgiSozuGoster();
+  document.dispatchEvent(new CustomEvent("tema-degisti"));
+}
+function bekleyenTema() {
+  const k = depoOku("yks-tema-bekleyen", null);
+  return k && TEMALAR[k] ? k : null;
+}
+let hesapKilit = null; // bu hesabın gizli kelimeyle açtığı tema; kapatsa da tekrar şifresiz açabilir
+async function temayiHesabaYaz(kod) {
+  if (kod !== "normal") hesapKilit = kod;
+  // Giriş yapılmadan açıldıysa bu cihazda bekler, ilk girişte hesaba yazılır.
+  depoYaz("yks-tema-bekleyen", oturum ? null : kod === "normal" ? null : kod);
+  if (!oturum) return;
+  if (oturum.bulut && bulut && bulut.auth.currentUser) {
+    try {
+      await bulut.F.setDoc(bulut.F.doc(bulut.db, "kullanicilar", bulut.auth.currentUser.uid), { tema: kod, ozelTema: kod === "ozel", kilit: hesapKilit }, { merge: true });
+    } catch (e) { /* bağlantı yoksa bu cihazda açık kalır */ }
+  } else if (!oturum.bulut) {
+    const hesaplar = depoOku("yks-hesaplar", {});
+    if (hesaplar[oturum.eposta]) {
+      hesaplar[oturum.eposta].tema = kod;
+      hesaplar[oturum.eposta].kilit = hesapKilit;
+      depoYaz("yks-hesaplar", hesaplar);
+    }
+  }
+}
+
+// ---------- Sevgi sözleri (sadece özel temada görünür) ----------
+const SEVGI_SOZLERI = [
+  "Seni çok seviyorum, bunu hiç unutma. 💗",
+  "Gülüşün, en zor sorudan bile daha güzel.",
+  "Her gün seninle biraz daha güzel. 🌿",
+  "Sen benim en sevdiğim insansın.",
+  "İyi ki varsın, iyi ki benimsin. ♥",
+  "Yorulduğunda aklına beni getir, hep yanındayım.",
+  "Kalbim her an seninle, sınav salonunda bile. 💞",
+  "Seninle her şey daha kolay, sen de bunu başaracaksın.",
+  "Dünyanın en güzel gözlerine sahip öğrenci sensin.",
+  "Ne olursa olsun seninle gurur duyuyorum.",
+  "Bir mola ver, su iç, gülümse. Seni seviyorum. 🌸",
+  "Seni her gün yeniden seçerdim.",
+  "Birlikte hayal ettiğimiz her şey gerçek olacak.",
+  "Sen benim en güzel tesadüfüm, en doğru kararımsın.",
+];
+let sevgiSira = Math.floor(Math.random() * SEVGI_SOZLERI.length);
+let ilkSoz = true; // Türkan'ın temasında ilk önce arkadaşlarının mesajı görünsün
+function sevgiSozuGoster() {
+  const el = document.getElementById("sevgi-sozu");
+  if (!el || !ozelTemaAcikMi()) return;
+  const sozler = temaBilgi().sozler || SEVGI_SOZLERI;
+  el.classList.add("gizle");
+  setTimeout(() => {
+    if (ilkSoz && (temaKodu === "turkan" || temaKodu === "ceren")) sevgiSira = temaKodu === "ceren" ? 1 : 0;
+    ilkSoz = false;
+    el.textContent = sozler[sevgiSira++ % sozler.length];
+    el.classList.remove("gizle");
+  }, 400);
+}
+function baslikHarf(m) {
+  return m.charAt(0).toLocaleUpperCase("tr-TR") + m.slice(1);
+}
+function gorunenAd() {
+  if (temaBilgi().isim) return temaBilgi().isim;
+  return oturum ? baslikHarf(oturum.ad.split(" ")[0]) : "";
+}
+function sevgiAdiYaz() {
+  const ad = gorunenAd();
+  const not = document.getElementById("arkadas-not");
+  if (not) {
+    not.textContent = temaBilgi().not || "";
+    not.hidden = !temaBilgi().not;
+  }
+  document.querySelectorAll(".sevgili-ad").forEach((el) => (el.textContent = ad ? ` ${ad}` : ""));
+  document.querySelectorAll(".tema-emoji").forEach((el) => (el.textContent = temaBilgi().emoji || "💗"));
+}
+
+// Arkadaş temaları için ortak motivasyon sözleri.
+const ARKADAS_SOZLERI = [
+  "Bu sene senin senen! ✨",
+  "Netlerin uçuşa geçti, böyle devam 🚀",
+  "Bugün bir deneme, yarın bir üniversite.",
+  "Yorulunca dinlen ama bırakma, çok az kaldı.",
+  "Her soru seni hedefine bir adım yaklaştırıyor.",
+  "Sen yaparsın, biz sana inanıyoruz 💪",
+  "Küçük adımlar, büyük sonuçlar. Bugünkü adımını at.",
+  "Bir mola ver, su iç, sonra kaldığın yerden devam.",
+  "Sınav bitince kutlamayı şimdiden planla 🎉",
+  "Kötü geçen deneme sadece bir veri, sen değilsin.",
+];
+
+// Türkan'ın veteriner teması için sözler.
+const VETERINER_SOZLERI = [
+  "Hepimiz yapabileceğine inanıyoruz, sen de kendine inan turkan! Seni çok seviyoruz 💚",
+  "Bir gün bir kedinin hayatını kurtaracaksın. Bugün bir soru daha çöz 🐱",
+  "Her net, beyaz önlüğe bir adım daha. 🩺",
+  "Patili dostların seni bekliyor, pes etmek yok 🐾",
+  "Köpekler sadakati, sen de çalışmayı seviyorsun 🐶",
+  "Biyoloji soruları senin için çocuk oyuncağı olacak.",
+  "Veteriner Fakültesi kapısında görüşmek üzere! 🎓",
+  "Kediler 16 saat uyur, sen biraz daha çalış, sonra uyu 😺",
+  "Yorulunca bir kedi videosu izle, sonra kaldığın yerden devam.",
+  "Gelecekte binlerce can sana emanet olacak. Bugün kendine yatırım yap.",
+  "Bir mama kabı kadar sabırlı, bir yavru kadar enerjik ol 🐕",
+  "Bu sene senin senen, Dr. turkan! ✨",
+];
+
+// Ceren'in tıp teması için sözler.
+const TIP_SOZLERI = [
+  "Neler başardın, bunu da başarırsın Dr. Ceren 🩺",
+  "Her şeye rağmen en iyisin! Yapabileceğini biliyoruz, seni destekliyoruz ve seni seviyoruz. Ceren!!",
+  "Beyaz önlük sana çok yakışacak 🥼",
+  "Bir gün birinin hayatını kurtaracaksın. Bugün bir soru daha çöz ❤️",
+  "Kalbin kadar güçlü bir zihnin var, Dr. Ceren 💪",
+  "Nöronların çalışıyor, netlerin uçuyor 🧠",
+  "Yorulunca dinlen, doktorların da molaya ihtiyacı var ☕",
+  "Tıp Fakültesi kapısında görüşmek üzere! 🎓",
+  "Şimdiye kadar hiçbir zorluk seni durduramadı, bu da durduramayacak.",
+  "Biyoloji, kimya, fizik… hepsi senin için sadece birer basamak.",
+  "Kötü geçen deneme sadece bir tahlil sonucu. Tedavisi: biraz daha çalışmak 💊",
+  "Gurur duyduğumuz Dr. Ceren, hep yanındayız 💙",
+];
+
+// Gizli kelimeyle açılan temalar. ozet: kelimenin SHA-256 özeti (kelimenin kendisi kodda yok).
+const TEMALAR = {
+  ozel: {
+    ozet: "4459d6608a95efd1ed4320ec2e96689f55585348a608638558b9a3c599394bf4",
+    isim: "Ela",
+    emoji: "💗", sozler: SEVGI_SOZLERI, profil: "Bu hesap sana özel 💗 Seni çok seviyorum.",
+  },
+  ceren: {
+    ozet: "b748f736341cbc4ff340015d58dca4a1e25c91b647dc372fa50571e9fc85350b",
+    isim: "Ceren", not: "Her şeye rağmen en iyisin! Yapabileceğini biliyoruz, seni destekliyoruz ve seni seviyoruz. Ceren!!",
+    emoji: "🩺", sozler: TIP_SOZLERI, profil: "Geleceğin doktoru 🩺 Neler başardın, bunu da başarırsın Dr. Ceren.",
+    hedef: { ikon: "⚕️", baslik: "Hedef: Tıp Fakültesi", desen: "^Tıp(\\s|$)", ad: "tıp", ara: "tıp", ek: "🩺" },
+  },
+  turkan: {
+    ozet: "29ca46d41350edff88ee0729eb33c9efc5e9ef4d336adfda43bb6ec18962e9db",
+    isim: "turkan", not: "Hepimiz yapabileceğine inanıyoruz, sen de kendine inan turkan! Seni çok seviyoruz 💚",
+    emoji: "🐾", sozler: VETERINER_SOZLERI,
+    hedef: { ikon: "🩺", baslik: "Hedef: Veteriner Fakültesi", desen: "^Veteriner(\\s|$)", ad: "veterinerlik", ara: "veteriner", ek: "🐾" }, profil: "Geleceğin veterineri 🐾 Patili dostlar seni bekliyor.",
+  },
+};
+
+// ---------- Modal ----------
+const modal = document.getElementById("hesap-modal");
+const hesapBtn = document.getElementById("hesap-btn");
+let bulut = null; // Firebase yüklenince { auth, db, ... }
+let oturum = null; // { ad, eposta, bulut: bool }
+
+function modalAc(gorunum) {
+  modal.hidden = false;
+  document.body.classList.add("modal-acik");
+  gorunumGoster(gorunum || (oturum ? "profil" : "giris"));
+}
+function modalKapat() {
+  modal.hidden = true;
+  document.body.classList.remove("modal-acik");
+}
+function gorunumGoster(ad) {
+  modal.querySelectorAll("[data-gorunum]").forEach((el) => (el.hidden = el.dataset.gorunum !== ad));
+  modal.querySelectorAll(".modal-sekme button").forEach((b) => b.classList.toggle("active", b.dataset.ac === ad));
+  modal.querySelector(".modal-sekme").hidden = !(ad === "giris" || ad === "kayit");
+  modal.querySelector(".modal-kutu").classList.toggle("gizli-mod", ad === "ozel");
+  modal.querySelectorAll(".form-mesaj").forEach((m) => (m.textContent = ""));
+  if (ad === "profil") profilCiz();
+  if (ad === "ozel") {
+    document.getElementById("ozel-durum").textContent = ozelTemaAcikMi() ? "> Bu hesabın erişimi aktif." : "";
+    document.getElementById("ozel-kapat").hidden = !ozelTemaAcikMi();
+    setTimeout(() => document.getElementById("ozel-sifre").focus(), 50);
+  }
+}
+function mesaj(id, metin, iyi) {
+  const el = document.getElementById(id);
+  el.textContent = metin;
+  el.classList.toggle("iyi", !!iyi);
+}
+
+function hesapBtnGuncelle() {
+  const ad = gorunenAd();
+  hesapBtn.textContent = oturum ? `${ozelTemaAcikMi() ? temaBilgi().emoji || "💗" : "👤"} ${ad}` : "Giriş yap";
+}
+
+function profilCiz() {
+  if (!oturum) return;
+  document.getElementById("profil-ad").textContent = oturum.ad;
+  document.getElementById("profil-eposta").textContent = oturum.eposta;
+  const profilSevgi = document.getElementById("profil-sevgi");
+  profilSevgi.hidden = !temaBilgi().profil;
+  profilSevgi.textContent = temaBilgi().profil || "";
+  const temaBtn = document.getElementById("tema-degistir");
+  temaBtn.hidden = !hesapKilit;
+  temaBtn.textContent = ozelTemaAcikMi() ? "Özel temayı kapat" : "Özel temamı geri aç";
+  document.getElementById("profil-not").textContent = oturum.bulut
+    ? "Denemelerin, seviye testin ve çalışma programın hesabına kaydediliyor. Başka cihazdan girince de görünür."
+    : "Hesabın şimdilik sadece bu cihazda. Denemelerin ve testlerin bu tarayıcıda saklanıyor.";
+}
+
+// ---------- Cihaz içi hesaplar (Firebase ayarı yokken) ----------
+async function yerelKayit(ad, eposta, sifre) {
+  const hesaplar = depoOku("yks-hesaplar", {});
+  if (hesaplar[eposta]) throw new Error("Bu e-posta ile zaten bir hesap var. Giriş yapmayı dene.");
+  hesaplar[eposta] = { ad, ozet: await ozet(eposta + ":" + sifre) };
+  depoYaz("yks-hesaplar", hesaplar);
+  return { ad, eposta, bulut: false };
+}
+async function yerelGiris(eposta, sifre) {
+  const h = depoOku("yks-hesaplar", {})[eposta];
+  if (!h || h.ozet !== (await ozet(eposta + ":" + sifre))) throw new Error("E-posta ya da şifre hatalı.");
+  return { ad: h.ad, eposta, bulut: false, tema: h.tema || (h.ozel ? "ozel" : "normal"), kilit: h.kilit || null };
+}
+
+// ---------- Firebase (ayar varsa) ----------
+const FB_SURUM = "10.12.2";
+async function bulutYukle() {
+  if (!FIREBASE_AYAR) return null;
+  const kok = `https://www.gstatic.com/firebasejs/${FB_SURUM}/`;
+  const [app, auth, fs] = await Promise.all([
+    import(kok + "firebase-app.js"),
+    import(kok + "firebase-auth.js"),
+    import(kok + "firebase-firestore.js"),
+  ]);
+  const uyg = app.initializeApp(FIREBASE_AYAR);
+  return { auth: auth.getAuth(uyg), db: fs.getFirestore(uyg), A: auth, F: fs };
+}
+
+function hataMetni(e) {
+  const kod = (e && e.code) || "";
+  if (kod.includes("email-already-in-use")) return "Bu e-posta ile zaten bir hesap var. Giriş yapmayı dene.";
+  if (kod.includes("invalid-email")) return "E-posta adresi geçersiz.";
+  if (kod.includes("weak-password")) return "Şifre en az 6 karakter olmalı.";
+  if (kod.includes("invalid-credential") || kod.includes("wrong-password") || kod.includes("user-not-found")) return "E-posta ya da şifre hatalı.";
+  if (kod.includes("too-many-requests")) return "Çok fazla deneme yapıldı, biraz bekleyip tekrar dene.";
+  if (kod.includes("network")) return "İnternet bağlantını kontrol et.";
+  return (e && e.message) || "Bir sorun oldu, tekrar dene.";
+}
+
+// Yerel verilerle buluttakileri birleştirir: denemeler birleşir, seviye testinde yeni olan kalır.
+function birlestir(anahtar, yerel, uzak) {
+  if (uzak == null) return yerel;
+  if (yerel == null) return uzak;
+  if (anahtar === "yks-denemeler" && Array.isArray(yerel) && Array.isArray(uzak)) {
+    const gorulen = new Map();
+    [...uzak, ...yerel].forEach((d) => gorulen.set(`${d.tarih}|${d.ad}`, d));
+    return [...gorulen.values()].sort((a, b) => String(a.tarih).localeCompare(String(b.tarih)));
+  }
+  if (anahtar === "yks-seviye-v2" && typeof yerel === "object" && typeof uzak === "object") {
+    const sonuc = { ...uzak };
+    Object.entries(yerel).forEach(([d, k]) => {
+      if (!sonuc[d] || String(k.tarih) > String(sonuc[d].tarih)) sonuc[d] = k;
+    });
+    return sonuc;
+  }
+  return yerel;
+}
+
+let sonGonderilen = "";
+async function bulutaGonder() {
+  if (!bulut || !oturum || !oturum.bulut) return;
+  const kullanici = bulut.auth.currentUser;
+  if (!kullanici) return;
+  const veri = {};
+  VERI_ANAHTARLARI.forEach((k) => (veri[k] = JSON.stringify(depoOku(k, null))));
+  const metin = JSON.stringify(veri);
+  if (metin === sonGonderilen) return;
+  try {
+    await bulut.F.setDoc(bulut.F.doc(bulut.db, "kullanicilar", kullanici.uid), { ...veri, guncelleme: Date.now() }, { merge: true });
+    sonGonderilen = metin;
+  } catch (e) { /* bir sonraki denemede gönderilir */ }
+}
+
+async function buluttanAl(kullanici) {
+  try {
+    const snap = await bulut.F.getDoc(bulut.F.doc(bulut.db, "kullanicilar", kullanici.uid));
+    const uzak = snap.exists() ? snap.data() : {};
+    const uzakTema = uzak.tema || (uzak.ozelTema ? "ozel" : "normal");
+    hesapKilit = uzak.kilit || (uzakTema !== "normal" ? uzakTema : null);
+    if (!modal.hidden) profilCiz();
+    if (bekleyenTema()) ozelTemaUygula(bekleyenTema(), true);
+    else if (uzakTema !== temaKodu) ozelTemaUygula(uzakTema, false);
+    let degisti = false;
+    VERI_ANAHTARLARI.forEach((k) => {
+      const yerel = depoOku(k, null);
+      let u = null;
+      try { u = uzak[k] ? JSON.parse(uzak[k]) : null; } catch (e) { u = null; }
+      const son = birlestir(k, yerel, u);
+      if (JSON.stringify(son) !== JSON.stringify(yerel)) {
+        depoYaz(k, son);
+        degisti = true;
+      }
+    });
+    await bulutaGonder();
+    if (degisti) location.reload();
+  } catch (e) { /* bağlantı yoksa yerel verilerle devam */ }
+}
+
+// ---------- Olaylar ----------
+hesapBtn.addEventListener("click", () => modalAc());
+modal.addEventListener("click", (e) => {
+  if (e.target === modal || e.target.closest(".modal-kapat")) return modalKapat();
+  const ac = e.target.closest("[data-ac]");
+  if (ac) gorunumGoster(ac.dataset.ac);
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !modal.hidden) modalKapat();
+});
+
+document.getElementById("kayit-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const ad = document.getElementById("kayit-ad").value.trim();
+  const eposta = document.getElementById("kayit-eposta").value.trim().toLocaleLowerCase("tr-TR");
+  const sifre = document.getElementById("kayit-sifre").value;
+  if (ad.length < 2) return mesaj("kayit-mesaj", "Adını yaz.");
+  if (sifre.length < 6) return mesaj("kayit-mesaj", "Şifre en az 6 karakter olmalı.");
+  mesaj("kayit-mesaj", "Hesabın oluşturuluyor...", true);
+  if (FIREBASE_AYAR && !(await bulutSozu)) return mesaj("kayit-mesaj", "Giriş sistemine bağlanılamadı. İnternetini kontrol edip tekrar dene.");
+  try {
+    if (bulut) {
+      const k = await bulut.A.createUserWithEmailAndPassword(bulut.auth, eposta, sifre);
+      await bulut.A.updateProfile(k.user, { displayName: ad });
+      oturum = { ad, eposta, bulut: true };
+      hesapKilit = null;
+      ozelTemaUygula(bekleyenTema() || "normal", !!bekleyenTema());
+      await bulutaGonder();
+    } else {
+      oturum = await yerelKayit(ad, eposta, sifre);
+      depoYaz("yks-oturum", oturum);
+      hesapKilit = null;
+      ozelTemaUygula(bekleyenTema() || "normal", !!bekleyenTema());
+    }
+    hesapBtnGuncelle();
+    gorunumGoster("profil");
+  } catch (err) {
+    mesaj("kayit-mesaj", bulut ? hataMetni(err) : err.message);
+  }
+});
+
+document.getElementById("giris-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const eposta = document.getElementById("giris-eposta").value.trim().toLocaleLowerCase("tr-TR");
+  const sifre = document.getElementById("giris-sifre").value;
+  mesaj("giris-mesaj", "Giriş yapılıyor...", true);
+  if (FIREBASE_AYAR && !(await bulutSozu)) return mesaj("giris-mesaj", "Giriş sistemine bağlanılamadı. İnternetini kontrol edip tekrar dene.");
+  try {
+    if (bulut) {
+      await bulut.A.signInWithEmailAndPassword(bulut.auth, eposta, sifre);
+    } else {
+      oturum = await yerelGiris(eposta, sifre);
+      depoYaz("yks-oturum", oturum);
+      hesapKilit = oturum.kilit || (oturum.tema !== "normal" ? oturum.tema : null);
+      if (bekleyenTema()) ozelTemaUygula(bekleyenTema(), true);
+      else ozelTemaUygula(oturum.tema, false);
+      gorunumGoster("profil");
+    }
+  } catch (err) {
+    mesaj("giris-mesaj", bulut ? hataMetni(err) : err.message);
+  }
+});
+
+document.getElementById("sifre-unuttum").addEventListener("click", async () => {
+  const eposta = document.getElementById("giris-eposta").value.trim();
+  if (FIREBASE_AYAR) await bulutSozu;
+  if (!bulut) return mesaj("giris-mesaj", "Hesaplar şimdilik sadece bu cihazda olduğu için şifre sıfırlanamıyor, yeni bir hesap açabilirsin.");
+  if (!eposta) return mesaj("giris-mesaj", "Önce e-posta adresini yaz.");
+  try {
+    await bulut.A.sendPasswordResetEmail(bulut.auth, eposta);
+    mesaj("giris-mesaj", "Şifre sıfırlama bağlantısı e-postana gönderildi.", true);
+  } catch (err) {
+    mesaj("giris-mesaj", hataMetni(err));
+  }
+});
+
+document.getElementById("cikis-btn").addEventListener("click", async () => {
+  if (bulut && oturum && oturum.bulut) {
+    await bulutaGonder();
+    await bulut.A.signOut(bulut.auth);
+  }
+  oturum = null;
+  try {
+    localStorage.removeItem("yks-oturum");
+    localStorage.removeItem("yks-tema-bekleyen");
+  } catch (e) { /* yok say */ }
+  hesapKilit = null;
+  ozelTemaUygula("normal", false);
+  modalKapat();
+});
+
+document.getElementById("ozel-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const kutu = document.getElementById("ozel-sifre");
+  const yazilan = kutu.value.trim();
+  const ozetler = [await ozet(yazilan), await ozet(yazilan.toLocaleLowerCase("tr-TR"))];
+  const kod = Object.keys(TEMALAR).find((k) => ozetler.includes(TEMALAR[k].ozet));
+  if (kod) {
+    kutu.value = "";
+    mesaj("ozel-mesaj", "> Kod doğrulandı. Kimlik eşleştiriliyor...", true);
+    setTimeout(() => mesaj("ozel-mesaj", "> Erişim onaylandı. Hoş geldin, ajan.", true), 900);
+    setTimeout(() => {
+      ozelTemaUygula(kod, true);
+      modalKapat();
+    }, 1900);
+  } else {
+    mesaj("ozel-mesaj", "> ⛔ Erişim reddedildi. Geçersiz kod.");
+    const k = modal.querySelector(".modal-kutu");
+    k.classList.remove("titre"); void k.offsetWidth; k.classList.add("titre");
+    kutu.select();
+  }
+});
+document.getElementById("tema-degistir").addEventListener("click", () => {
+  ozelTemaUygula(ozelTemaAcikMi() ? "normal" : hesapKilit, true);
+  profilCiz();
+});
+document.getElementById("ozel-kapat").addEventListener("click", () => {
+  ozelTemaUygula("normal", true);
+  modalKapat();
+});
+
+// ---------- Başlangıç ----------
+if (!FIREBASE_AYAR) {
+  oturum = depoOku("yks-oturum", null);
+  document.getElementById("yerel-not").hidden = false;
+  const h = oturum && depoOku("yks-hesaplar", {})[oturum.eposta];
+  const yerelTema = h ? h.tema || (h.ozel ? "ozel" : "normal") : "normal";
+  hesapKilit = h ? h.kilit || (yerelTema !== "normal" ? yerelTema : null) : null;
+  ozelTemaUygula(bekleyenTema() || yerelTema, !!(oturum && bekleyenTema()));
+}
+hesapBtnGuncelle();
+sevgiAdiYaz();
+sevgiSozuGoster();
+setInterval(sevgiSozuGoster, 8000);
+
+const bulutSozu = bulutYukle().catch(() => null);
+bulutSozu.then((b) => {
+  if (!b) return;
+  bulut = b;
+  b.A.onAuthStateChanged(b.auth, (k) => {
+    if (k) {
+      oturum = { ad: k.displayName || k.email.split("@")[0], eposta: k.email, bulut: true };
+      buluttanAl(k);
+      if (!modal.hidden) gorunumGoster("profil");
+    } else {
+      oturum = null;
+      hesapKilit = null;
+      ozelTemaUygula(bekleyenTema() || "normal", false);
+    }
+    hesapBtnGuncelle();
+    sevgiAdiYaz();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") bulutaGonder();
+  });
+  setInterval(bulutaGonder, 20000);
+});
+
+  </script>
+
+  <script>
+const DEPO_ANAHTAR = "yks-denemeler";
+
+function iki(n) {
+  return n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+const GRAFIK_TURLERI = [
+  { kod: "tytNet", ad: "TYT Net" },
+  { kod: "aytNet", ad: "AYT Net" },
+  { kod: "TYT", ad: "TYT Puan" },
+  { kod: "SAY", ad: "SAY" },
+  { kod: "EA", ad: "EA" },
+  { kod: "SOZ", ad: "SÖZ" },
+];
+let grafikTuru = "tytNet";
+
+function denemeleriOku() {
+  try {
+    const veri = JSON.parse(localStorage.getItem(DEPO_ANAHTAR));
+    return Array.isArray(veri) ? veri : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function denemeleriYaz(liste) {
+  try {
+    localStorage.setItem(DEPO_ANAHTAR, JSON.stringify(liste));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function kacis(metin) {
+  const div = document.createElement("div");
+  div.textContent = metin;
+  return div.innerHTML;
+}
+
+function denemeDegeri(d, kod) {
+  if (kod === "tytNet" || kod === "aytNet") return d[kod];
+  return d.puanlar ? d.puanlar[kod] : undefined;
+}
+
+function grafikCiz(liste) {
+  const noktalar = liste
+    .map((d, i) => ({ i, d, v: denemeDegeri(d, grafikTuru) }))
+    .filter((p) => typeof p.v === "number");
+  if (noktalar.length === 0) return `<p class="muted">Bu tür için kayıtlı değer yok.</p>`;
+
+  const G = 600, Y = 300, sol = 56, sag = 30, ust = 40, alt = 40;
+  const degerler = noktalar.map((p) => p.v);
+  let min = Math.min(...degerler), max = Math.max(...degerler);
+  if (min === max) { min -= 5; max += 5; }
+  const pay = (max - min) * 0.1;
+  min -= pay; max += pay;
+  const x = (k) => noktalar.length === 1 ? (sol + G - sag) / 2 : sol + (k / (noktalar.length - 1)) * (G - sol - sag);
+  const y = (v) => ust + (1 - (v - min) / (max - min)) * (Y - ust - alt);
+
+  let svg = `<svg id="grafik" viewBox="0 0 ${G} ${Y}" role="img" aria-label="Deneme gelişim grafiği">`;
+  for (let k = 0; k <= 3; k++) {
+    const v = min + (k / 3) * (max - min);
+    svg += `<line class="eksen" x1="${sol}" x2="${G - sag}" y1="${y(v)}" y2="${y(v)}"/>`;
+    svg += `<text x="${sol - 6}" y="${y(v) + 4}" text-anchor="end">${Math.round(v)}</text>`;
+  }
+  svg += `<polyline class="cizgi" points="${noktalar.map((p, k) => `${x(k)},${y(p.v)}`).join(" ")}"/>`;
+  noktalar.forEach((p, k) => {
+    svg += `<circle class="nokta" cx="${x(k)}" cy="${y(p.v)}" r="7"><title>${kacis(p.d.ad)}: ${iki(p.v)}</title></circle>`;
+    svg += `<text x="${x(k)}" y="${Y - 8}" text-anchor="middle">${k + 1}</text>`;
+  });
+  const son = noktalar[noktalar.length - 1];
+  svg += `<text class="etiket" x="${x(noktalar.length - 1)}" y="${y(son.v) - 16}" text-anchor="middle">${iki(son.v)}</text>`;
+  return svg + `</svg>`;
+}
+
+function denemeleriCiz() {
+  const kutu = document.getElementById("deneme-icerik");
+  const liste = denemeleriOku();
+  if (liste.length === 0) {
+    kutu.innerHTML = `<div class="card"><p class="muted" style="margin:0">Henüz kayıtlı deneme yok. <a href=\"index.html#hesapla\">Hesaplayıcıda</a> netlerini girip "Kaydet"e bas.</p></div>`;
+    return;
+  }
+
+  const sekmeler = GRAFIK_TURLERI.map((t) =>
+    `<button class="chip${t.kod === grafikTuru ? " active" : ""}" data-tur="${t.kod}">${t.ad}</button>`).join("");
+
+  const satirlar = liste.map((d, i) => `
+    <tr>
+      <td>${i + 1}. ${kacis(d.ad)}<small>${new Date(d.tarih).toLocaleDateString("tr-TR")}</small></td>
+      <td>${iki(d.tytNet)}</td>
+      <td>${iki(d.aytNet)}</td>
+      <td><button class="sil" data-sil="${i}" aria-label="Sil">×</button></td>
+    </tr>`).reverse().join("");
+
+  kutu.innerHTML = `
+    <div class="card chart-wrap">
+      <div class="chart-tabs">${sekmeler}</div>
+      ${grafikCiz(liste)}
+    </div>
+    <div class="card">
+      <table class="net-table deneme-table">
+        <thead><tr><th>Deneme</th><th>TYT Net</th><th>AYT Net</th><th></th></tr></thead>
+        <tbody>${satirlar}</tbody>
+      </table>
+    </div>`;
+}
+
+document.getElementById("deneme-icerik").addEventListener("click", (e) => {
+  const tur = e.target.dataset.tur;
+  const sil = e.target.dataset.sil;
+  if (tur) {
+    grafikTuru = tur;
+    denemeleriCiz();
+  } else if (sil !== undefined) {
+    const liste = denemeleriOku();
+    liste.splice(Number(sil), 1);
+    denemeleriYaz(liste);
+    denemeleriCiz();
+  }
+});
+
+denemeleriCiz();
+
+  </script>
+</body>
+</html>
