@@ -80,6 +80,7 @@ nav.ust-nav a {
   padding: 8px 14px; border-radius: 999px; transition: background .15s, color .15s;
 }
 nav.ust-nav a:hover { color: var(--text); background: var(--surface-2); }
+@media (max-width: 980px) { nav.ust-nav a { padding: 8px 10px; font-size: .88rem; } }
 nav.ust-nav a.aktif { color: var(--primary); background: var(--primary-soft); }
 
 /* Telefon alt menüsü */
@@ -88,7 +89,7 @@ nav.ust-nav a.aktif { color: var(--primary); background: var(--primary-soft); }
   nav.ust-nav { display: none; }
   body { padding-bottom: 76px; }
   .alt-nav {
-    display: grid; grid-template-columns: repeat(5, 1fr);
+    display: grid; grid-template-columns: repeat(6, 1fr);
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
     background: color-mix(in srgb, var(--surface) 92%, transparent);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -542,6 +543,7 @@ html.tema-tip .logo::after { content: " ✚"; color: var(--primary); }
         <a href="uni.html">Üniversiteler</a>
         <a href="program.html">Program</a>
         <a href="denemeler.html" class="aktif">Denemeler</a>
+        <a href="calisma.html">Çalışma</a>
         </nav>
         <button class="hesap-btn" id="hesap-btn">Giriş yap</button>
       </div>
@@ -582,6 +584,7 @@ html.tema-tip .logo::after { content: " ✚"; color: var(--primary); }
     <a href="uni.html"><svg viewBox="0 0 24 24"><path d="M3 10 12 5l9 5-9 5-9-5Z"/><path d="M7 12v5c3 2 7 2 10 0v-5"/></svg>Üniler</a>
     <a href="program.html"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Program</a>
     <a href="denemeler.html" class="aktif"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-4 3 3 5-6"/></svg>Denemeler</a>
+    <a href="calisma.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4M12 2v3"/></svg>Çalışma</a>
   </nav>
   <div class="modal" id="hesap-modal" hidden>
     <div class="modal-kutu" role="dialog" aria-modal="true" aria-label="Hesap">
@@ -616,6 +619,7 @@ html.tema-tip .logo::after { content: " ✚"; color: var(--primary); }
         <div class="actions">
           <a class="btn btn-ghost" href="denemeler.html">Denemelerim</a>
           <a class="btn btn-ghost" href="program.html">Programım</a>
+          <a class="btn btn-ghost" href="calisma.html">Soru takibim</a>
           <button class="btn btn-ghost" id="tema-degistir" hidden></button>
           <button class="btn" id="cikis-btn">Çıkış yap</button>
         </div>
@@ -653,7 +657,7 @@ const FIREBASE_AYAR = {
   appId: "1:276814890274:web:503ecd61e683d12571117b",
 };
 
-const VERI_ANAHTARLARI = ["yks-denemeler", "yks-seviye-v2", "yks-program-ayar"];
+const VERI_ANAHTARLARI = ["yks-denemeler", "yks-seviye-v2", "yks-program-ayar", "yks-sorular", "yks-calisma"];
 
 function depoOku(anahtar, varsayilan) {
   try {
@@ -888,7 +892,7 @@ function profilCiz() {
   temaBtn.hidden = !hesapKilit;
   temaBtn.textContent = ozelTemaAcikMi() ? "Özel temayı kapat" : "Özel temamı geri aç";
   document.getElementById("profil-not").textContent = oturum.bulut
-    ? "Denemelerin, seviye testin ve çalışma programın hesabına kaydediliyor. Başka cihazdan girince de görünür."
+    ? "Denemelerin, seviye testin, çalışma programın ve soru takibin hesabına kaydediliyor. Başka cihazdan girince de görünür."
     : "Hesabın şimdilik sadece bu cihazda. Denemelerin ve testlerin bu tarayıcıda saklanıyor.";
 }
 
@@ -939,6 +943,16 @@ function birlestir(anahtar, yerel, uzak) {
     const gorulen = new Map();
     [...uzak, ...yerel].forEach((d) => gorulen.set(`${d.tarih}|${d.ad}`, d));
     return [...gorulen.values()].sort((a, b) => String(a.tarih).localeCompare(String(b.tarih)));
+  }
+  // Soru ve çalışma kayıtları id ile birleşir; bir cihazda silinen kayıt her yerde silinmiş sayılır.
+  if ((anahtar === "yks-sorular" || anahtar === "yks-calisma") && Array.isArray(yerel) && Array.isArray(uzak)) {
+    const kayitlar = new Map();
+    [...uzak, ...yerel].forEach((k) => {
+      if (!k || !k.id) return;
+      const onceki = kayitlar.get(k.id);
+      kayitlar.set(k.id, onceki && onceki.sil ? onceki : k);
+    });
+    return [...kayitlar.values()].sort((a, b) => String(a.tarih).localeCompare(String(b.tarih)));
   }
   if (anahtar === "yks-seviye-v2" && typeof yerel === "object" && typeof uzak === "object") {
     const sonuc = { ...uzak };
